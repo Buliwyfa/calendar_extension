@@ -5,8 +5,12 @@ namespace humhub\modules\calendar_extension\controllers;
 use Yii;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\calendar_extension\models\CalendarExtensionEntry;
-
+use humhub\modules\calendar_extension\interfaces\ICal;
+use DateTime;
+use humhub\modules\calendar_extension\interfaces\ParsedICal;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -42,6 +46,33 @@ class AdminController extends Controller
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+//            'result' => $events,
+//            'models' => $models,
+        ]);
+    }
+
+    public function actionSync ()
+    {
+        // TODO: write function as Ajax --> click on button will update ical-Entries with URL
+        $url = 'http://mep24web.de/mep-web/public/calendar/UhUicl2vj3m3gtk8JOvtxk4SNOnLPLn26Tt6ALBtaqLw9U_IjgqPXDx46eJ8yQhv';
+//        $url = 'https://calendar.google.com/calendar/ical/eo36l909ocj7tl0v7t4optahqg%40group.calendar.google.com/private-4547e43bd8fa532b99b05d1a4966e1be/basic.ics';
+
+        $result = $this->formatICalToArray($url);
+        $events = $this->formatResultArray($result);
+        $models = $this->createModels($events);
+        if (!isset($models['error']))
+        {
+            $this->checkAndSubmitModels($models);
+//            return $this->htmlRedirect(Url::to('/calendar_extension/admin/index'));
+            $message = Yii::t('CalendarExtensionModule.base', 'Update successfull!');
+        }
+        else
+        {
+            $message = Yii::t('CalendarExtensionModule.base', 'Update failed!');
+        }
+
+        return $this->renderAjax('result', [
+            'message' => $message,
         ]);
     }
 
@@ -144,75 +175,135 @@ class AdminController extends Controller
 
 
 
-
-    private function createEntry()
+    private function formatICalToArray($url)
     {
+        $ical = new ParsedICal($url);
+        $ical->hasEvents();
 
-    }
-
-    private function syncEntry()
-    {
-
-    }
-
-    private function deleteEntry()
-    {
-
-    }
-
-    // ****************************************************************************************
-    // ******** 2. Anlegen eines neuen Events --> jetzt in models/forms/CalendarEntryForm *****
-    // ****************************************************************************************
-
-    /*    public function createNew($contentContainer, $start = null, $end = null)
+        if ($ical->hasEvents())
         {
-            $this->entry = new CalendarEntry();
-            $this->entry->content->container = $contentContainer;
-            $this->is_public = ($this->entry->content->visibility != null) ? $this->entry->content->visibility : Content::VISIBILITY_PRIVATE;
-            $this->timeZone = Yii::$app->formatter->timeZone;
-
-            $defaultSettings = new DefaultSettings(['contentContainer' => $contentContainer]);
-            $this->entry->participation_mode = $defaultSettings->participation_mode;
-            $this->entry->allow_decline = $defaultSettings->allow_decline;
-            $this->entry->allow_maybe = $defaultSettings->allow_maybe;
-
-            // Translate from user timeZone to system timeZone note the datepicker expects app timezone
-            $this->translateDateTimes($start, $end, $this->timeZone, $this->timeZone);
-        }*/
-
-
-    // *****************************************************************************************
-    // ******** 1. Erstellen / Bearbeiten eines Kalendereintrags - aus EntryController.php *****
-    // *****************************************************************************************
-
-    /*    public function actionEdit($id = null, $start = null, $end = null, $cal = null)
+            return $ical->getEvents();
+        }
+        else
         {
-            if (empty($id) && $this->canCreateEntries()) {
-                $calendarEntryForm = new CalendarEntryForm();
-                $calendarEntryForm->createNew($this->contentContainer, $start, $end);
-            } else {
-                $calendarEntryForm = new CalendarEntryForm(['entry' => $this->getCalendarEntry($id)]);
-                if(!$calendarEntryForm->entry->content->canEdit()) {
-                    throw new HttpException(403);
+            return null;
+        }
+    }
+
+    private function formatTimestampToDateTime($timestamp)
+    {
+        $date = new DateTime();
+        $date->setTimestamp($timestamp);
+        return $date->format('Y-m-d h:i:s');
+//        return Yii::$app->formatter->asDatetime($timestamp);
+    }
+
+    private function formatResultArray($result)
+    {
+        $events = [];
+        foreach($result as $key=>$subarray)
+        {
+            $subNewArr = array();
+            foreach ($subarray as $key => $value)
+            {
+                switch ($key) {
+                    case 'dtstamp':
+                        $subNewArr[$key] = $this->formatTimestampToDateTime($value);
+                        break;
+                    case 'dtstart':
+                        $subNewArr[$key] = $this->formatTimestampToDateTime($value);
+                        break;
+                    case 'dtend':
+                        $subNewArr[$key] = $this->formatTimestampToDateTime($value);
+                        break;
+                    case 'created':
+                        $subNewArr[$key] = $this->formatTimestampToDateTime($value);
+                        break;
+                    case 'last-modified':
+                        $subNewArr[$key] = $this->formatTimestampToDateTime($value);
+                        break;
+                    case 'description':
+                        $subNewArr[$key] = $value[0];
+                        break;
+                    case 'organizer':
+                        // remove "-chars from organizer
+                        $subNewArr[$key] = $onlyconsonants = str_replace('"', "", $value['CN']);
+                        break;
+                    default:
+                        $subNewArr[$key] = $value;
                 }
             }
+            array_push($events, $subNewArr);
+        }
+        return $events;
+    }
 
-            if (!$calendarEntryForm->entry) {
-                throw new HttpException(404);
+    private function createModels(Array $events)
+    {
+        $models = [];
+        foreach ($events as $event)
+        {
+            try {
+                $model = new CalendarExtensionEntry();
+                $model->title           =   $event['summary'];
+                $model->uid             =   $event['uid'];
+                $model->dtstamp         =   $event['dtstamp'];
+                $model->last_modified   =   $event['last-modified'];
+                $model->start_datetime  =   $event['dtstart'];
+                $model->end_datetime    =   $event['dtend'];
+                $model->organizer       =   $event['organizer'];
+                $model->description     =   $event['description'];
+                $model->all_day         =   0;
+                $models[] = $model;
             }
-
-            if ($calendarEntryForm->load(Yii::$app->request->post()) && $calendarEntryForm->save()) {
-                if(empty($cal)) {
-                    return ModalClose::widget(['saved' => true]);
-                } else {
-                    return $this->renderModal($calendarEntryForm->entry, 1);
-                }
+            catch (Exception $e) {
+                $models['error'] = $e->getMessage();
             }
+            return $models;
+        }
+    }
 
-            return $this->renderAjax('edit', [
-                'calendarEntryForm' => $calendarEntryForm,
-                'contentContainer' => $this->contentContainer,
-                'editUrl' => $this->contentContainer->createUrl('/calendar/entry/edit', ['id' => $calendarEntryForm->entry->id, 'cal' => $cal])
-            ]);
-        }*/
+    private function checkAndSubmitModels(Array &$models)
+    {
+        // models is an array of CalendarExtensionEntry-Models
+        foreach ($models as $key => $value)
+        {
+            // search for existing entries in db
+            if (($result = CalendarExtensionEntry::find()->where(['uid' => $value->uid])->andWhere(['last_modified' => $value->last_modified])->one()) !== null) {
+                // if found --> remove models from array
+                unset($models[$key]);
+            }
+            else if (($result = CalendarExtensionEntry::find()->where(['uid' => $value->uid])->one()) !== null) {
+                // check if uid exists and enty has been updated in ical
+                $this->updateModel($result, $value);
+            }
+            else {
+                // nothing found --> new entry
+                $this->storeModel($value);
+            }
+        }
+    }
+
+    private function updateModel(CalendarExtensionEntry &$result, CalendarExtensionEntry $model)
+    {
+        // TODO: check if double entries exists!!
+        $result->title              = $model->title;
+        $result->uid                = $model->uid;
+        $result->dtstamp            = $model->dtstamp;
+        $result->last_modified      = $model->last_modified;
+        $result->start_datetime     = $model->start_datetime;
+        $result->end_datetime       = $model->end_datetime;
+        $result->organizer          = $model->organizer;
+        $result->description        = $model->description;
+        $result->all_day            = $model->all_day;
+
+        $result->save();
+    }
+
+    private function storeModel(CalendarExtensionEntry &$model)
+    {
+        // TODO: store new model
+        $model->save();
+    }
+
 }

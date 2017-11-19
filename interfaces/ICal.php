@@ -15,10 +15,6 @@
 
 namespace humhub\modules\calendar_extension\interfaces;
 
-use DateInterval;
-use DateTime;
-
-
 /**
  * This PHP-Class should only read a iCal-File (*.ics), parse it and give an
  * array with its content.
@@ -320,7 +316,7 @@ class ICal
      */
     public function hasEvents()
     {
-        return ( count($this->events()) > 0 ? true : false );
+        return ( count($this->getEvents()) > 0 ? true : false );
     }
 
     /**

@@ -15,4 +15,6 @@ return array(
     'End Datetime' => 'Ende',
     'All Day' => 'Ganztägig',
     'UID' => 'UID',
+    'Update successfull!' => 'Synchronisation erfolgreich!',
+    'Update failed!' => 'Synchronisation fehlgeschlagen',
 );
