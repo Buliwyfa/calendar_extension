@@ -4,6 +4,7 @@ namespace humhub\modules\calendar_extension;
 
 use humhub\modules\calendar_extension\integration\calendar\CalendarExtension;
 use humhub\modules\calendar_extension\integration\calendar\CalendarExtensionQuery;
+use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
 use Yii;
 use yii\helpers\Url;
 use yii\base\Object;
@@ -21,6 +22,7 @@ class Events extends Object
 
         if(!$contentContainer || $contentContainer->isModuleEnabled('calendar_extension')) {
             CalendarExtension::addItemTypes($event);
+//            $event->addType(CalendarExtensionCalendarEntry::findAll());
         }
     }
 
@@ -31,7 +33,7 @@ class Events extends Object
 
         if(!$contentContainer || $contentContainer->isModuleEnabled('calendar_extension')) {
             /* @var $entry Entry[] */
-            $entry = CalendarExtension::addItems($event);
+            CalendarExtension::addItems($event);
         }
     }
 

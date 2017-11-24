@@ -10,7 +10,7 @@ use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 
 /* @var $this \humhub\components\View */
-/* @var $meeting \humhub\modules\meeting\models\Meeting  */
+/* @var $module \humhub\modules\calendar_extension\models\CalendarExtensionCalendar  */
 /* @var $canManageEntries boolean  */
 /* @var $editUrl string  */
 
@@ -21,6 +21,6 @@ use humhub\widgets\ModalDialog;
         <?= $message?>
     </div>
     <div class="modal-footer">
-        <?= ModalButton::cancel(Yii::t('CalendarModule.base', 'Close')) ?>
+        <?= ModalButton::cancel(Yii::t('CalendarExtensionModule.base', 'Close')) ?>
     </div>
 <?php ModalDialog::end(); ?>

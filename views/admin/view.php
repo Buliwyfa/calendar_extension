@@ -2,47 +2,48 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use humhub\widgets\ModalButton;
 
 /* @var $this yii\web\View */
-/* @var $model humhub\modules\calendar_extension\models\CalendarExtensionEntry */
+/* @var $model humhub\modules\calendar_extension\models\CalendarExtensionCalendar */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('base', 'Calendar Extension Entries'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
-
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h1><?= Html::encode($this->title) ?></h1>
+        <h1><?= Yii::t('CalendarExtensionModule.base', 'Calendar: {modelClass}', ['modelClass' => Html::encode($this->title),
+            ]) ?></h1>
     </div>
     <div class="panel-body">
 
-        <!--    <p>
-        <?/*= Html::a(Yii::t('base', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) */?>
-        <?/*= Html::a(Yii::t('base', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('base', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) */?>
-    </p>-->
+        <div class="btn-group-sm">
+            <?= Html::a(Yii::t('CalendarExtensionModule.base', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('CalendarExtensionModule.base', 'Delete'), ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => Yii::t('CalendarExtensionModule.base', 'Are you sure you want to delete this item?'),
+                    'method' => 'post',
+                ],
+            ]) ?>
+            <?= ModalButton::primary(Yii::t('CalendarExtensionModule.base', 'Sync Calendar'))->post('sync?id=' . $model->id)->sm()->icon('fa-refresh')->right();?>
+        </div>
 
-        <?= DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-//                'id',
-                'organizer',
-//                'last_modified',
-//                'dtstamp',
-                'title',
-                'description:ntext',
-                'start_datetime',
-                'end_datetime',
-//                'all_day',
-//                'uid',
-            ],
-        ]) ?>
+        </br>
+        <div>
+            <?= DetailView::widget([
+                'model' => $model,
+                'attributes' => [
+                    //            'id',
+                    'title',
+                    'url:ntext',
+                    'timezone',
+                    'color',
+                ],
+            ]) ?>
+        </div>
+        </br>
+        <div >
+            <?= Html::a(Yii::t('CalendarExtensionModule.base', 'Back to overview'), ['index'], ['class' => 'btn btn-default']) ?>
+        </div>
 
     </div>
-</div>

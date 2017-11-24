@@ -18,6 +18,7 @@
 namespace humhub\modules\calendar_extension\interfaces;
 
 use DateTimeZone;
+use humhub\modules\calendar_extension\models\CalendarExtensionICalArray;
 /**
  * This is the Parsed iCal-class
  *
@@ -30,7 +31,7 @@ use DateTimeZone;
  * @param {string} filename The name of the file which should be parsed
  * @constructor
  */
-class ParsedICal extends ICal
+class ParsedICal extends ICalReader
 {
 
     /**
@@ -270,6 +271,23 @@ class ParsedICal extends ICal
             }
             return $return;
         }
+    }
+
+    public function getICalArray($start = false, $end = false)
+    {
+        $result = self::getEvents($start, $end);
+        $arr = [];
+        foreach ($result as $event)
+        {
+            $data = new CalendarExtensionICalArray($event);
+            $model = $data->formatToArray();
+            array_push($arr, $model);
+            unset($data);
+            unset($model);
+        }
+        unset($result);
+        return $arr;
+
     }
 
     /**

@@ -8,13 +8,15 @@
 
 namespace humhub\modules\calendar_extension\integration\calendar;
 
-use DateTime;
-use humhub\modules\calendar\models\CalendarEntry;
-use humhub\widgets\Label;
+use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntryType;
 use Yii;
+use humhub\libs\Html;
 use yii\base\Object;
 use yii\helpers\Url;
-use humhub\modules\calendar_extension\models\CalendarExtensionEntry;
+use DateTime;
+use DateInterval;
+use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
+use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntryQuery;
 
 /**
  * Created by PhpStorm.
@@ -26,7 +28,7 @@ use humhub\modules\calendar_extension\models\CalendarExtensionEntry;
 class CalendarExtension extends Object
 {
     /**
-     * Default color of meeting type calendar items.
+     * Default color of external calendar type items.
      */
     const DEFAULT_COLOR = '#DC0E25';
 
@@ -38,11 +40,12 @@ class CalendarExtension extends Object
      */
     public static function addItemTypes($event)
     {
+        /* @var $meetings Meeting[] */
         $event->addType(static::ITEM_TYPE_KEY, [
-//            'title' => Yii::t('CalendarExtension.base', 'Meeting'),
             'title' => Yii::t('CalendarExtensionModule.base', 'Entry'),
             'color' => static::DEFAULT_COLOR,
-            'icon' => 'fa-calendar-o'
+            'icon' => 'fa-calendar-o',
+            'format' => 'Y-m-d',
         ]);
     }
 
@@ -52,20 +55,11 @@ class CalendarExtension extends Object
     public static function addItems($event)
     {
         /* @var $meetings Meeting[] */
-        $meetings = CalendarExtensionQuery::findForEvent($event);
+        $entries = CalendarExtensionCalendarEntryQuery::findForEvent($event);
 
         $items = [];
-        foreach ($meetings as $meeting) {
-            $items[] = [
-                'start' => $meeting->getStart_DateDateTime(),
-                'end' => $meeting->getEnd_DateDateTime(),
-                'title' => $meeting->title,
-                'editable' => false,
-                'icon' => 'fa-calendar-o',
-                'viewUrl' => '/calendar_extension/admin/modal?id=' . $meeting->id,
-                'openUrl' => '',
-                'updateUrl' => '',
-            ];
+        foreach ($entries as $entry) {
+            $items[] = $entry->getFullCalendarArray();
         }
 
         $event->addItems(static::ITEM_TYPE_KEY, $items);

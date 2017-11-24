@@ -4,11 +4,9 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model humhub\modules\calendar_extension\models\CalendarExtensionEntry */
+/* @var $model humhub\modules\calendar_extension\models\CalendarExtensionCalendar */
 
-$this->title = Yii::t('base', 'Create Calendar Extension Entry');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('base', 'Calendar Extension Entries'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Yii::t('CalendarExtensionModule.base', 'Add external Calendar');
 ?>
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -20,3 +18,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </div>
 </div>
+

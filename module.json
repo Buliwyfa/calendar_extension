@@ -1,12 +1,14 @@
 {
     "id": "calendar_extension",
-    "name": "Calendar_extension",
-    "description": "An automatically generated HumHub module to help you get started quickly.",
+    "name": "Calendar Extension",
+    "description": "Extends the Calendar-Module to show external Calendars with WEBCAL",
     "keywords": [
+        "calendar",
+        "calendar extension"
     ],
     "version": "0.1",
     "humhub": {
-        "minVersion": "0.8"
+        "minVersion": "1.2.3"
     },
-    "screenshots": ["assets/screen1.jpg"]
+    "screenshots": ["assets/screen1.jpg", "assets/screen2.jpg", "assets/screen3.jpg"]
 }
