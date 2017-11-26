@@ -2,6 +2,8 @@
 
 namespace humhub\modules\calendar_extension;
 
+use humhub\modules\calendar_extension\models\CalendarExtensionCalendar;
+use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
 use humhub\modules\calendar_extension\models\CalendarExtensionEntry;
 use Yii;
 use yii\helpers\Url;
@@ -33,9 +35,12 @@ class Module extends \humhub\components\Module
      */
     public function disable()
     {
-        foreach (CalendarExtensionEntry::find()->all() as $entry) {
+        foreach (CalendarExtensionCalendar::find()->all() as $entry) {
             $entry->delete();
         }
+//        foreach (CalendarExtensionCalendarEntry::find()->all() as $entry) {
+//            $entry->delete();
+//        }
         parent::disable();
     }
 

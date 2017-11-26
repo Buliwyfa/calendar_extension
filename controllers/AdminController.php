@@ -9,9 +9,10 @@ use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
 use humhub\modules\admin\components\Controller;
-use humhub\modules\calendar_extension\interfaces\ParsedICal;
+use humhub\modules\calendar_extension\CalendarUtils;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendar;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
+use ICal\ICal;
 
 
 /**
@@ -40,32 +41,12 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-//        $url = 'https://calendar.google.com/calendar/ical/eo36l909ocj7tl0v7t4optahqg%40group.calendar.google.com/private-4547e43bd8fa532b99b05d1a4966e1be/basic.ics';
-//        $url = 'http://mep24web.de/mep-web/public/calendar/UhUicl2vj3m3gtk8JOvtxk4SNOnLPLn26Tt6ALBtaqLw9U_IjgqPXDx46eJ8yQhv';
-
-//        $ical = new ParsedICal($url);
-//        try {
-//        $ical = new ICal($url, array(
-//            'defaultSpan'           => 2,     // Default value
-//            'defaultTimeZone'       => 'UTC',
-//            'defaultWeekStart'      => 'MO',  // Default value
-//            'skipRecurrence'        => false, // Default value
-//            'useTimeZoneWithRRules' => false, // Default value
-//        ));
-//            } catch (\Exception $e) {
-//        die($e);
-//        }
-//        $result = $ical->events();
-//        $result = $ical;
-
-
         $dataProvider = new ActiveDataProvider([
             'query' => CalendarExtensionCalendar::find(),
         ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-//            'result' => $result,
         ]);
     }
 
@@ -91,7 +72,7 @@ class AdminController extends Controller
     {
         $model = $this->findModel($id);
 
-        if(!$model) {
+        if (!$model) {
             throw new HttpException(404);
         }
 
@@ -111,37 +92,64 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionSync ($id)
+    public function actionSync($id)
     {
         $calendarModel = $this->findModel($id);
 
-        if ($calendarModel)
-        {
+        if ($calendarModel) {
             try {
-                $ical = new ParsedICal($calendarModel->url);
+                // load ical and parse it
+                $ical = new ICal($calendarModel->url, array(
+                    'defaultSpan' => 2,     // Default value
+                    'defaultTimeZone' => Yii::$app->timeZone,
+                    'defaultWeekStart' => 'MO',  // Default value
+                    'skipRecurrence' => false, // Default value
+                    'useTimeZoneWithRRules' => false, // Default value
+                ));
             } catch (\Exception $e) {
                 die($e);
             }
-            if ($ical->hasEvents())
-            {
+
+            // add info to CalendarModel
+            $calendarModel->addAttributes($ical);
+            $calendarModel->save();
+
+            // check events
+            if ($ical->hasEvents()) {
                 // get formatted array
-                $entryArray = $ical->getICalArray();
+                $events = $ical->events();
 
                 // create Entry-models without safe
                 $models = [];
-                foreach ($entryArray as $item)
-                {
-                    $model = new CalendarExtensionCalendarEntry($item);
+                foreach ($events as $event) {
+                    $model = new CalendarExtensionCalendarEntry();
+                    $model->uid = $event->uid;
                     $model->calendar_id = $calendarModel->id;
+                    $model->title = $event->summary;
+                    $model->description = $event->description;
+                    $model->location = $event->location;
+                    //$model->last_modified = $event->last_modified_array[1];
+//                    $last_modified = $ical->iCalDateToDateTime($event->last_modified, true);    // stores at UTC
+                    $model->last_modified = CalendarUtils::formatDateTimeToString($event->last_modified);
+                    //$model->dtstamp = $event->dtstamp;
+//                    $dtstamp = $ical->iCalDateToDateTime($event->dtstamp, true);    // stores at UTC
+                    $model->dtstamp = CalendarUtils::formatDateTimeToString($event->dtstamp);
+                    //$model->start_datetime = $event->dtstart;
+//                    $start = $ical->iCalDateToDateTime($event->dtstart, true);    // stores at UTC
+                    $model->start_datetime = CalendarUtils::formatDateTimeToString($event->dtstart);
+                    //$model->end_datetime = $event->dtend;
+//                    $end = $ical->iCalDateToDateTime($event->dtend, true);    // stores at UTC
+                    $model->end_datetime = CalendarUtils::formatDateTimeToString($event->dtend);
+                    $model->time_zone = Yii::$app->timeZone;
+                    $model->all_day = CalendarUtils::checkAllDay($event->dtstart, $event->dtend);
+
                     array_push($models, $model);
                     unset($model);
                 }
                 $this->checkAndSubmitModels($models, $calendarModel->id);
             }
             $message = Yii::t('CalendarExtensionModule.base', 'Update successfull!');
-        }
-        else
-        {
+        } else {
             $message = Yii::t('CalendarExtensionModule.base', 'Update failed!');
         }
 
@@ -149,6 +157,7 @@ class AdminController extends Controller
             'message' => $message,
         ]);
     }
+
 
     /**
      * Creates a new CalendarExtensionCalendar model.
@@ -160,6 +169,21 @@ class AdminController extends Controller
         $model = new CalendarExtensionCalendar();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            try {
+                // load ical and parse it
+                $ical = new ICal($model->url, array(
+                    'defaultTimeZone' => Yii::$app->timeZone,
+                ));
+                // add info to CalendarModel
+                $model->addAttributes($ical);
+                $model->save();
+            } catch (\Exception $e) {
+                return $this->render('create', [
+                    'model' => $model,
+                    'message' => $e,
+                ]);
+            }
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -167,6 +191,7 @@ class AdminController extends Controller
             ]);
         }
     }
+
 
     /**
      * Updates an existing CalendarExtensionCalendar model.
@@ -187,6 +212,7 @@ class AdminController extends Controller
         }
     }
 
+
     /**
      * Deletes an existing CalendarExtensionCalendar model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -199,6 +225,7 @@ class AdminController extends Controller
 
         return $this->redirect(['index']);
     }
+
 
     /**
      * Finds the CalendarExtensionCalendar model based on its primary key value.
@@ -225,8 +252,7 @@ class AdminController extends Controller
     protected function getModels(array $entryArray, $calendar_id)
     {
         $temp = [];
-        foreach ($entryArray as $item)
-        {
+        foreach ($entryArray as $item) {
             $model = new CalendarExtensionCalendarEntry($item);
             $model->calendar_id = $calendar_id;
             array_push($temp, $model);
@@ -234,29 +260,6 @@ class AdminController extends Controller
         }
         return $temp;
     }
-
-
-//    // Todo: old --> won't delete no longer existing ical-entries
-//    protected function checkAndSubmitModels(array &$models)
-//    {
-//        // models is an array of CalendarExtensionCalendarEntry-Models
-//        foreach ($models as $key => $value) {
-//            // search for existing entries in db
-//            if (($result = $dbModels::find()->where(['uid' => $value->uid])->andWhere(['calendar_id' => $value->calendar_id])->andWhere(['>=', 'last_modified', $value->last_modified])->one()) !== null) {
-////            if ($value->findByUidAndCalAndTs() !== null) {
-//                // if found and timestamp lower/identical--> remove models from array
-//                unset($models[$key]);
-//            } else if (($result = CalendarExtensionCalendarEntry::find()->where(['uid' => $value->uid])->one()) !== null) {
-////            else if ($result = $value->findByUidAndCal() !== null) {
-//                // check if uid exists and enty has been updated in ical
-////                $this->updateModel($result, $value);
-//                $result->updateByModel($value);
-//            } else {
-//                // nothing found --> new entry
-//                $value->save();
-//            }
-//        }
-//    }
 
 
     /**
@@ -271,44 +274,37 @@ class AdminController extends Controller
         $keepInDb = [];
 
         // models is an array of CalendarExtensionCalendarEntry-Models
-        foreach ($models as $key => $value)
-        {
+        foreach ($models as $key => $value) {
             $exists = false;
-            foreach ($dbModels as $dbModel)
-            {
+            foreach ($dbModels as $dbModel) {
                 // search for existing entries in db
                 if ($dbModel->uid == $value->uid && $dbModel->last_modified >= $value->last_modified) {
                     // if found and timestamp lower/identical--> nothing to change
                     array_push($keepInDb, $dbModel);
                     unset($models[$key]);
                     $exists = true;
-                }
-                elseif ($dbModel->uid == $value->uid) {
+                } elseif ($dbModel->uid == $value->uid) {
                     // check if uid exists and enty has been updated in ical
                     $dbModel->updateByModel($value);
                     array_push($keepInDb, $dbModel);
                     $exists = true;
                 }
             }
-            if (!$exists)
-            {
+            if (!$exists) {
                 $value->save();
             }
 
         }
         // remove arrays to keep in db
-        foreach ($dbModels as $key => $val)
-        {
-            foreach ($keepInDb as $item)
-            {
+        foreach ($dbModels as $key => $val) {
+            foreach ($keepInDb as $item) {
                 if ($val == $item) {
                     unset($dbModels[$key]);
                 }
             }
         }
         // finally delete items from db
-        foreach ($dbModels as $model)
-        {
+        foreach ($dbModels as $model) {
             $model->delete();
         }
         unset($keepInDb);

@@ -9,6 +9,7 @@ use yii\grid\GridView;
 $this->title = Yii::t('CalendarExtensionModule.base', 'External Calendars');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <h1><?= Html::encode($this->title) ?></h1>

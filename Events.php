@@ -3,7 +3,6 @@
 namespace humhub\modules\calendar_extension;
 
 use humhub\modules\calendar_extension\integration\calendar\CalendarExtension;
-use humhub\modules\calendar_extension\integration\calendar\CalendarExtensionQuery;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
 use Yii;
 use yii\helpers\Url;

@@ -3,6 +3,7 @@ namespace humhub\modules\calendar_extension\models;
 
 use humhub\modules\calendar\interfaces\AbstractCalendarQuery;
 use humhub\modules\cfiles\models\rows\AbstractFileSystemItemRow;
+use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
 use Yii;
 use humhub\modules\space\models\Space;
 use DateTime;

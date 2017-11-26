@@ -30,5 +30,5 @@ return array(
     'Calendar: {modelClass}' => 'Kalender: {modelClass}',
     'Calendar' => 'Kalender',
     'Title and Color' => 'Titel und Farbe',
-
+    'Yes' => 'Ja',
 );

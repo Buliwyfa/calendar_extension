@@ -2,6 +2,7 @@
 
 namespace humhub\modules\calendar_extension\models;
 
+use ICal\ICal;
 use Yii;
 use humhub\components\ActiveRecord;
 
@@ -13,6 +14,9 @@ use humhub\components\ActiveRecord;
  * @property string $url
  * @property string $time_zone The timeZone these entries was saved, note the dates itself are always saved in app timeZone
  * @property string $color
+ * @property string $version    The ical-version, the calendar is stored
+ * @property string $cal_name    The original calendar-name
+ * @property string $cal_scale    The original calendar scale format, e.g. Gregorian
  *
  * property CalendarExtensionEvent[] $calendarExtensionEvents
  * @property CalendarExtensionCalendarEntry[] $CalendarExtensionCalendarEntries
@@ -35,9 +39,27 @@ class CalendarExtensionCalendar extends ActiveRecord
     {
         return [
             [['title', 'url'], 'string', 'max' => 255],
-            [['timezone'], 'string', 'max' => 60],
+            [['time_zone'], 'string', 'max' => 60],
             [['color'], 'string', 'max' => 7],
+            [['url'], 'validateURL'],
         ];
+    }
+
+    /**
+     * Validator for the url field.
+     *
+     * @param string $attribute attribute name
+     * @param array $params parameters
+     */
+    public function validateURL($attribute, $params)
+    {
+        try {
+            new ICal($this->url, array(
+                'defaultTimeZone' => Yii::$app->timeZone,
+            ));
+        } catch (\Exception $e) {
+            $this->addError($attribute, Yii::t('CalendarExtensionModule.base', "No valid ical url!"));
+        }
     }
 
     /**
@@ -49,7 +71,7 @@ class CalendarExtensionCalendar extends ActiveRecord
             'id' => Yii::t('CalendarExtensionModule.base', 'ID'),
             'title' => Yii::t('CalendarExtensionModule.base', 'Title'),
             'url' => Yii::t('CalendarExtensionModule.base', 'Url'),
-            'timezone' => Yii::t('CalendarExtensionModule.base', 'Timezone'),
+            'time_zone' => Yii::t('CalendarExtensionModule.base', 'Timezone'),
             'color' => Yii::t('CalendarExtensionModule.base', 'Color'),
         ];
     }
@@ -69,16 +91,21 @@ class CalendarExtensionCalendar extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-//    public function getCalendarExtensionEvents()
-//    {
-//        return $this->hasMany(CalendarExtensionEvent::className(), ['calendar_id' => 'id']);
-//    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getCalendarExtensionCalendarEntries()
     {
         return $this->hasMany(CalendarExtensionCalendarEntry::className(), ['calendar_id' => 'id']);
+    }
+
+    public function addAttributes(ICal $ical)
+    {
+        // add info to CalendarModel
+        $this->time_zone = $ical->calendarTimeZone();
+        $this->cal_name = $ical->calendarName();
+        if (isset($ical->cal['VCALENDAR']['VERSION'])) {
+            $this->version = $ical->cal['VCALENDAR']['VERSION'];
+        }
+        if (isset($ical->cal['VCALENDAR']['CALSCALE'])) {
+            $this->cal_scale = $ical->cal['VCALENDAR']['CALSCALE'];
+        }
     }
 }

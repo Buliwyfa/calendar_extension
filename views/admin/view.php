@@ -36,8 +36,11 @@ $this->title = $model->title;
                     //            'id',
                     'title',
                     'url:ntext',
-                    'timezone',
-                    'color',
+                    'time_zone',
+//                    'color',
+                    'version',
+                    'cal_name',
+                    'cal_scale'
                 ],
             ]) ?>
         </div>
