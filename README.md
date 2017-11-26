@@ -13,9 +13,9 @@ __Author:__ David Born
 <https://github.com/staxDB/calendar_extenstion/issues>
 
 ## ToDos
-- Option to delete external calendar
 - Security & permission management
-- Integrate multiple external calendars
+- fix migrations (disable & delete)
+- fix bug with calendar-widget "next events"
 
 
 This Module uses the Calendar UI Interface in v0.6 - [see dokumentation](https://github.com/humhub/humhub-modules-calendar/blob/master/docs/interface.md)
