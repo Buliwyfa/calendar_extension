@@ -10,7 +10,6 @@ use DateTime;
 use humhub\libs\DbDateValidator;
 use humhub\components\ActiveRecord;
 use yii\helpers\Url;
-
 use DateInterval;
 
 /**
@@ -182,12 +181,12 @@ class CalendarExtensionCalendarEntry extends ActiveRecord
         return [
             'id' => $this->id,
             'title' => $this->getTitle(),
-            'editable' => false,
+            'editable' => true,
             'icon' => 'fa-calendar-o',
             'allDay' => $this->all_day,
-            'viewUrl' => '/calendar_extension/entry/modal?id=' . $this->id,
-//            'updateUrl' => '/calendar_extension/entry/update?id=' . $this->id,
-//            'openUrl' => '/calendar_extension/admin/view?id=' . $this->calendar->id,
+            'viewUrl' => URL::to(['/calendar_extension/entry/modal', 'id' => $this->id]),
+//            'updateUrl' => URL::to(['/calendar_extension/entry/update', 'id' => $this->id]),
+            'openUrl' => URL::to(['/calendar_extension/entry/view', 'id' => $this->id]),
             'start' => $start,
             'end' => $end,
             'color' => $this->calendar->color, // overwrite color of Item_Type
