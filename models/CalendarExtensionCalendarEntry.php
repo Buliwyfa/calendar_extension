@@ -4,13 +4,11 @@ namespace humhub\modules\calendar_extension\models;
 
 use DateTimeZone;
 use humhub\libs\Html;
-use humhub\modules\calendar_extension\integration\calendar\CalendarExtensionQuery;
 use Yii;
 use DateTime;
 use humhub\libs\DbDateValidator;
 use humhub\components\ActiveRecord;
 use yii\helpers\Url;
-use DateInterval;
 
 /**
  * This is the model class for table "calendar_extension_calendar_entry".
