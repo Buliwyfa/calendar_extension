@@ -58,11 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'all_day',
                     'value' => (($model->all_day ==0) ? '' : Yii::t('CalendarExtensionModule.base', 'Yes') ),
                 ],
-//            'recur',
-//            'recur_type',
-//            'recur_interval',
-//            'recur_end',
-//            'color',
+                'Location',
 //            'time_zone',
             ],
             // only show items that are set

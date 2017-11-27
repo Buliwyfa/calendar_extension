@@ -8,6 +8,7 @@
 
 namespace humhub\modules\calendar_extension\permissions;
 
+use Yii;
 use humhub\modules\space\models\Space;
 use humhub\libs\BasePermission;
 
@@ -16,6 +17,10 @@ use humhub\libs\BasePermission;
  */
 class AdministerExternalCalendars extends BasePermission
 {
+    /**
+     * @inheritdoc
+     */
+    protected $moduleId = 'calendar_extension';
 
     /**
      * @inheritdoc
@@ -36,16 +41,18 @@ class AdministerExternalCalendars extends BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = "Administer external Calendars";
+    public function getTitle()
+    {
+        return Yii::t('CalendarExtensionModule.permissions', 'Administer external Calendars');
+    }
+
 
     /**
      * @inheritdoc
      */
-    protected $description = "Allows the user to administer external calendars (rename, delete, add)";
-
-    /**
-     * @inheritdoc
-     */
-    protected $moduleId = 'calendar_extension';
+    public function getDescription()
+    {
+        return Yii::t('CalendarExtensionModule.permissions', 'Allows the user to administer external calendars (rename, delete, add).');
+    }
 
 }

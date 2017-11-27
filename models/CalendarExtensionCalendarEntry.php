@@ -11,6 +11,8 @@ use humhub\libs\DbDateValidator;
 use humhub\components\ActiveRecord;
 use yii\helpers\Url;
 
+use DateInterval;
+
 /**
  * This is the model class for table "calendar_extension_calendar_entry".
  *
@@ -66,7 +68,7 @@ class CalendarExtensionCalendarEntry extends ActiveRecord
     }
 
     /**
-     * Validator for the endtime field.
+     * Validator for the end_datetime field.
      * Execute this after DbDateValidator
      *
      * @param string $attribute attribute name
@@ -87,7 +89,7 @@ class CalendarExtensionCalendarEntry extends ActiveRecord
         return [
             'id' => Yii::t('CalendarExtensionModule.base', 'ID'),
             'uid' => Yii::t('CalendarExtensionModule.base', 'UID'),
-            'calendar_id' => Yii::t('CalendarExtensionModule.base', 'Kalender'),
+            'calendar_id' => Yii::t('CalendarExtensionModule.base', 'Calendar'),
             'title' => Yii::t('CalendarExtensionModule.base', 'Title'),
             'description' => Yii::t('CalendarExtensionModule.base', 'Description'),
             'location' => Yii::t('CalendarExtensionModule.base', 'Location'),
@@ -101,7 +103,7 @@ class CalendarExtensionCalendarEntry extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        // Check is a full day span TODO: Already done in CalendarExtensionICalArray
+        // Check is a full day span --> Already done in AdminController->Sync
 //        if ($this->all_day == 0 && CalendarUtils::isFullDaySpan(new DateTime($this->start_datetime), new DateTime($this->end_datetime))) {
 //            $this->all_day = 1;
 //        }
@@ -113,8 +115,6 @@ class CalendarExtensionCalendarEntry extends ActiveRecord
             $end->modify('-1 second');
         }
         $this->end_datetime = $end->format('Y-m-d H:i:s');
-
-        // TODO: always store as UTC
 
         return parent::beforeSave($insert);
     }
@@ -131,6 +131,33 @@ class CalendarExtensionCalendarEntry extends ActiveRecord
     /**
      * @inheritdoc
      */
+//    public function getFullCalendarArray()
+//    {
+//        $end = Yii::$app->formatter->asDatetime($this->end_datetime, 'php:c');
+//
+//        if ($this->all_day) {
+//            // Note: In fullcalendar the end time is the moment AFTER the event.
+//            // But we store the exact event time 00:00:00 - 23:59:59 so add some time to the full day event.
+//            $endDateTime = new DateTime($this->end_datetime);
+//            $endDateTime->add(new DateInterval('PT2H'));
+//            $end = $endDateTime->format('Y-m-d');
+//        }
+//        if(!Yii::$app->user->isGuest) {
+//            Yii::$app->formatter->timeZone = Yii::$app->user->getIdentity()->time_zone;
+//        }
+//        $title = Html::encode($this->title);
+//        return [
+//            'id' => $this->id,
+//            'title' => $title,
+//            'editable' => false,
+//            'backgroundColor' => Html::encode($this->calendar->color),
+//            'allDay' => $this->all_day,
+//            'updateUrl' => '',
+//            'viewUrl' => '/calendar_extension/entry/modal?id=' . $this->id,
+//            'start' => Yii::$app->formatter->asDatetime($this->start_datetime, 'php:c'),
+//            'end' => $end,
+//        ];
+//    }
     public function getFullCalendarArray()
     {
         $start = $this->getStartDateTime();
@@ -138,14 +165,15 @@ class CalendarExtensionCalendarEntry extends ActiveRecord
 
             if ($this->all_day)
             {
-                $end = $end->modify('+2 hour');
+                $end = $end->modify('+1 second');
 //                $diff = $start->diff($end);
 //                if ($diff->days > 1)
 //                {
 //                    $this->all_day=0;
 ////                    $end = $end->setTime('00','00', '00');
 //                }
-                $end->setTime('00','00');
+//                $end->setTime('00','00');
+                $end->format('Y-m-d');
             }
 
         $title = Html::encode($this->title);

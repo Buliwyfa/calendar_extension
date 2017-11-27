@@ -7,8 +7,8 @@ class uninstall extends Migration
 
     public function up()
     {
-        $this->dropTable('calendar_extension_calendar');
         $this->dropTable('calendar_extension_calendar_entry');
+        $this->dropTable('calendar_extension_calendar');
     }
 
     public function down()
