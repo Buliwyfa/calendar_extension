@@ -14,8 +14,10 @@ __Author:__ David Born
 
 ## ToDos
 - Security & permission management
-- fix migrations (disable & delete)
+- rebuild as ContentActiveRecord and ContentContainerController (actually ActiveRecord & Controller)
 - fix bug with calendar-widget "next events"
+- make events searchable
+- make sync auto
 
 
 This Module uses the Calendar UI Interface in v0.6 - [see dokumentation](https://github.com/humhub/humhub-modules-calendar/blob/master/docs/interface.md)
