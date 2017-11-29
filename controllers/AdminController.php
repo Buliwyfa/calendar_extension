@@ -87,6 +87,20 @@ class AdminController extends Controller
         ]);
     }
 
+    /** TODO: actually not used --> Modal to view & edit Calendar
+     * Render a modal and send the model. Modal than renders the view.
+     * @param integer $id
+     * @return mixed
+     * @throws HttpException
+     */
+    public function actionErrorModal()
+    {
+        $message = "";
+        return $this->renderAjax('errormodal', [
+            'message' => $message,
+        ]);
+    }
+
     /** TODO: validate and check for errors + better message
      * Ajax-method called via button to sync external calendars.
      * @param integer $id

@@ -167,7 +167,7 @@ class CalendarExtensionCalendarEntry extends ActiveRecord
 //                if ($diff->days > 1)
 //                {
 //                    $this->all_day=0;
-////                    $end = $end->setTime('00','00', '00');
+//                    $end->setTime('00','00', '00');
 //                }
 //                $end->setTime('00','00');
                 $end->format('Y-m-d');
