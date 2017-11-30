@@ -17,8 +17,8 @@ $this->title = $model->title;
     <div class="panel-body">
 
         <div class="btn-group-sm">
-            <?= Html::a(Yii::t('CalendarExtensionModule.base', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a(Yii::t('CalendarExtensionModule.base', 'Delete'), ['delete', 'id' => $model->id], [
+            <?= Html::a(Yii::t('CalendarExtensionModule.base', 'Update'), $contentContainer->createUrl('/calendar_extension/calendar/update', ['id' => $model->id]), ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('CalendarExtensionModule.base', 'Delete'), $contentContainer->createUrl('/calendar_extension/calendar/delete', ['id' => $model->id]), [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => Yii::t('CalendarExtensionModule.base', 'Are you sure you want to delete this item?'),
@@ -46,7 +46,7 @@ $this->title = $model->title;
         </div>
         </br>
         <div >
-            <?= Html::a(Yii::t('CalendarExtensionModule.base', 'Back to overview'), ['index'], ['class' => 'btn btn-default']) ?>
+            <?= Html::a(Yii::t('CalendarExtensionModule.base', 'Back to overview'), $contentContainer->createUrl('/calendar_extension/calendar/'), ['class' => 'btn btn-default']) ?>
         </div>
 
     </div>

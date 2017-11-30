@@ -1,13 +1,12 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $model \humhub\modules\calendar_extension\models\ConfigForm */
 
-$this->title = Yii::t('CalendarExtensionModule.base', 'External Calendars');
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Yii::t('CalendarExtensionModule.views_admin_index', 'Calendar Extension Configuration');
 ?>
 
 <div class="panel panel-default">
@@ -15,35 +14,30 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
     <div class="panel-body">
-        <div class="btn-group-sm">
-            <?= Html::a(Yii::t('CalendarExtensionModule.base', 'Add Calendar'), ['create'], ['class' => 'btn btn-success']) ?>
-        </div>
-        <div>
-            <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
+        <?php $form = ActiveForm::begin(); ?>
+        <?= $form->errorSummary($model); ?>
 
-                    //                'id',
-                    'title',
-//                    'url:ntext',
-
-                    [
-                        'class' => 'yii\grid\ActionColumn',
-                        'contentOptions'=>['style'=>'min-width: 60px;'] // <-- right here
-
-                    ],
-                ],
-//                'tableOptions' => [
-//                    'class'=>'table'
-//                ],
-            ]);
-            ?>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <?= $form->field($model, 'autopost_calendar')->checkbox(); ?>
+                </label>
+            </div>
         </div>
-        </br>
-        <div >
-            <?= Html::a(Yii::t('CalendarExtensionModule.base', 'Back to overview'), ['/admin/module'], ['class' => 'btn btn-sm btn-default']) ?>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <?= $form->field($model, 'autopost_entries')->checkbox(); ?>
+                </label>
+            </div>
         </div>
+
+        <div class="form-group">
+            <?= Html::submitButton(Yii::t('CalendarExtensionModule.base', 'Save'), ['class' => 'btn btn-primary']) ?>
+        </div>
+
+        <?php ActiveForm::end(); ?>
 
     </div>
 </div>

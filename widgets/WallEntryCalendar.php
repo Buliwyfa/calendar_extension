@@ -9,31 +9,31 @@
 namespace humhub\modules\calendar_extension\widgets;
 
 use humhub\modules\calendar_extension\assets\Assets;
-use humhub\modules\calendar_extension\permissions\ManageEntry;
+use humhub\modules\calendar_extension\permissions\ManageCalendar;
 use Yii;
 
 /**
  * @inheritdoc
  */
-class WallEntry extends \humhub\modules\content\widgets\WallEntry
+class WallEntryCalendar extends \humhub\modules\content\widgets\WallEntry
 {
     /**
      * @var string
      */
-//    public $managePermission = ManageEntry::class;
+//    public $managePermission = ManageCalendar::class;
 
     /**
      * @inheritdoc
      */
-    public $editRoute = "/calendar_extension/entry/update";
+//    public $editRoute = "/calendar_extension/calendar/update";
 
     /**
      * @inheritdoc
      */
-    public $editMode = self::EDIT_MODE_MODAL;
+//    public $editMode = self::EDIT_MODE_MODAL;
 
     /**
-     * @var bool defines if the description and location info should be cut at a certain height, this should only be the case in the stream
+     * @var bool defines if the description and participation info should be cut at a certain height, this should only be the case in the stream
      */
     public $stream = true;
 
@@ -47,14 +47,13 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
      */
     public $showFiles = false;
 
-
 //    public function getContextMenu()
 //    {
 //        $canEdit = $this->contentObject->content->canEdit();
 //        if($canEdit) {
 //            $this->controlsOptions = [
 //                'add' => [
-//                    [CloseLink::class, ['entry' => $this->contentObject], ['sortOrder' => 210]]
+//                    [CloseLink::class, ['calendar' => $this->contentObject], ['sortOrder' => 210]]
 //                ]
 //            ];
 //        }
@@ -67,26 +66,21 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
 //        $result = parent::getContextMenu();
 //
 //        if($canEdit) {
-//            $this->addControl($result, [DeleteLink::class, ['entry' => $this->contentObject], ['sortOrder' => 100]]);
-//            $this->addControl($result, [EditLink::class, ['entry' => $this->contentObject], ['sortOrder' => 200]]);
+//            $this->addControl($result, [DeleteLink::class, ['calendar' => $this->contentObject], ['sortOrder' => 100]]);
+//            $this->addControl($result, [EditLink::class, ['calendar' => $this->contentObject], ['sortOrder' => 200]]);
 //        }
 //
 //        return $result;
 //    }
 
-    public function getWallEntryViewParams()
-    {
-        $params = parent::getWallEntryViewParams();
-        if($this->isInModal()) {
-            $params['showContentContainer'] = true;
-        }
-        return $params;
-    }
-
-    public function isInModal()
-    {
-        return Yii::$app->request->get('cal');
-    }
+//    public function getWallEntryViewParams()
+//    {
+//        $params = parent::getWallEntryViewParams();
+//        if($this->isInModal()) {
+//            $params['showContentContainer'] = true;
+//        }
+//        return $params;
+//    }
 
     /**
      * @inheritdoc
@@ -94,13 +88,12 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
     public function run()
     {
         Assets::register($this->getView());
-        $entry = $this->contentObject;
-        
+
 //        return $this->render('wallEntry', array('entry' => $this->contentObject, 'content' => $revision->content, 'justEdited' => $this->justEdited));
-        return $this->render('wallEntry', [
-            'calendarEntry' => $this->contentObject,
+        return $this->render('wallEntryCalendar', [
+            'calendar' => $this->contentObject,
             'collapse' => $this->collapse,
-            'contentContainer' => $entry->content->container
+            'contentContainer' => $this->contentObject->content->container
         ]);
     }
 

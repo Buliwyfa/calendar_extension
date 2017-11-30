@@ -4,7 +4,7 @@ namespace humhub\modules\calendar_extension\models;
 
 use ICal\ICal;
 use Yii;
-use humhub\components\ActiveRecord;
+use humhub\modules\content\components\ContentActiveRecord;
 
 /**
  * This is the model class for table "calendar_extension_calendar".
@@ -21,9 +21,50 @@ use humhub\components\ActiveRecord;
  * property CalendarExtensionEvent[] $calendarExtensionEvents
  * @property CalendarExtensionCalendarEntry[] $CalendarExtensionCalendarEntries
  */
-class CalendarExtensionCalendar extends ActiveRecord
+class CalendarExtensionCalendar extends ContentActiveRecord
 {
     public $eventArray = [];
+
+    /**
+     * @inheritdoc
+     */
+    public $autoAddToWall = false;
+
+    /**
+     * @inheritdoc
+     * set post to stream to false
+     */
+    public $streamChannel = null;
+    public $silentContentCreation = true;
+
+    /**
+     * @inheritdoc
+     */
+    public $wallEntryClass = "humhub\modules\calendar_extension\widgets\WallEntryCalendar";
+
+    /**
+     *  init by settings
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->setSettings();
+    }
+
+    public function setSettings()
+    {
+        // Set autopost settings for calendar
+        $module = Yii::$app->getModule('calendar_extension');
+        $autopost_calendar = $module->settings->get('autopost_calendar');
+
+        if ($autopost_calendar) {
+            // set back to autopost true
+            $this->streamChannel = 'default';
+            $this->silentContentCreation = false;
+        }
+    }
+
     /**
      * @inheritdoc
      */
@@ -62,6 +103,14 @@ class CalendarExtensionCalendar extends ActiveRecord
         }
     }
 
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['create'] = ['title', 'url'];
+        $scenarios['admin'] = ['title', 'url'];
+        return $scenarios;
+    }
+
     /**
      * @inheritdoc
      */
@@ -76,16 +125,36 @@ class CalendarExtensionCalendar extends ActiveRecord
         ];
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        return parent::afterSave($insert, $changedAttributes);
+    }
+
     /**
      * @inheritdoc
      */
     public function beforeDelete()
     {
-//        foreach (CalendarExtensionEvent::findAll(['calendar_id' => $this->id]) as $item) {
-//            $item->delete();
-//        }
+        foreach (CalendarExtensionCalendarEntry::findAll(['calendar_id' => $this->id]) as $item) {
+            $item->delete();
+        }
 
         return parent::beforeDelete();
+    }
+
+    public function getContentName()
+    {
+        return Yii::t('CalendarExtensionModule.base', "Calendar Extension");
+    }
+
+    public function getContentDescription()
+    {
+        return $this->title;
+    }
+
+    public function getUrl()
+    {
+        return $this->content->container->createUrl('//calendar_extension/calendar/view', array('id' => $this->id));
     }
 
     /**

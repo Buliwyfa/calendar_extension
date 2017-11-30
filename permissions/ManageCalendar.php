@@ -2,20 +2,21 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
+ *
  */
 
 namespace humhub\modules\calendar_extension\permissions;
 
-use Yii;
 use humhub\modules\space\models\Space;
-use humhub\libs\BasePermission;
+use humhub\modules\user\models\User;
+use Yii;
 
 /**
- * Page Administration Permission
+ * CreateEntry Permission
  */
-class AdministerExternalCalendars extends BasePermission
+class ManageCalendar extends \humhub\libs\BasePermission
 {
     /**
      * @inheritdoc
@@ -29,30 +30,31 @@ class AdministerExternalCalendars extends BasePermission
         Space::USERGROUP_OWNER,
         Space::USERGROUP_ADMIN,
         Space::USERGROUP_MODERATOR,
+        User::USERGROUP_SELF
     ];
-    
+
     /**
      * @inheritdoc
      */
     protected $fixedGroups = [
-        Space::USERGROUP_USER
+        Space::USERGROUP_USER,
+        User::USERGROUP_FRIEND,
+        User::USERGROUP_GUEST,
+        User::USERGROUP_USER,
+        User::USERGROUP_FRIEND,
     ];
 
-    /**
-     * @inheritdoc
-     */
+
+
     public function getTitle()
     {
-        return Yii::t('CalendarExtensionModule.permissions', 'Administer external Calendars');
+        return Yii::t('CalendarExtensionModule.permissions', 'Manage external Calendar');
     }
 
-
-    /**
-     * @inheritdoc
-     */
     public function getDescription()
     {
-        return Yii::t('CalendarExtensionModule.permissions', 'Allows the user to administer external calendars (rename, delete, add).');
+        return Yii::t('CalendarExtensionModule.permissions', 'Allows the user to edit/delete existing external calendar');
     }
+
 
 }
