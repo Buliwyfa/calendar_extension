@@ -14,6 +14,7 @@ use yii\helpers\Url;
 use Zend\Uri\Http;
 
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
@@ -38,6 +39,7 @@ class Module extends ContentContainerModule
     {
         return [
             Space::className(),
+            User::className(),
         ];
     }
 
@@ -80,6 +82,8 @@ class Module extends ContentContainerModule
     {
         if ($container instanceof Space) {
             return Yii::t('CalendarExtensionModule.base', 'Manage external calendar here.');
+        }elseif ($container instanceof User) {
+            return Yii::t('CalendarExtensionModule.base', 'Manage external calendar for your profile and mainmenu.');
         }
     }
 
