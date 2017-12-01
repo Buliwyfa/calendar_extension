@@ -20,7 +20,7 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
     /**
      * @var string
      */
-//    public $managePermission = ManageEntry::class;
+    public $managePermission = ManageEntry::class;
 
     /**
      * @inheritdoc
@@ -96,7 +96,6 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
         Assets::register($this->getView());
         $entry = $this->contentObject;
         
-//        return $this->render('wallEntry', array('entry' => $this->contentObject, 'content' => $revision->content, 'justEdited' => $this->justEdited));
         return $this->render('wallEntry', [
             'calendarEntry' => $this->contentObject,
             'collapse' => $this->collapse,

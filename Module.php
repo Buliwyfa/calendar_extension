@@ -79,7 +79,7 @@ class Module extends ContentContainerModule
     public function getContentContainerDescription(ContentContainerActiveRecord $container)
     {
         if ($container instanceof Space) {
-            return Yii::t('CalendarExtensionModule.base', 'Adds a news-entry to this space.');
+            return Yii::t('CalendarExtensionModule.base', 'Manage external calendar here.');
         }
     }
 
@@ -138,8 +138,6 @@ class Module extends ContentContainerModule
         if ($contentContainer !== null) {
             return [
                 new permissions\ManageCalendar(),
-                new permissions\CreateCalendar(),
-                new permissions\CreateEntry(),
                 new permissions\ManageEntry(),
             ];
         }

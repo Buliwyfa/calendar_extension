@@ -48,7 +48,7 @@ class ManageEntry extends \humhub\libs\BasePermission
 
     public function getTitle()
     {
-        return Yii::t('CalendarExtensionModule.permissions', 'Manage entries');
+        return Yii::t('CalendarExtensionModule.permissions', 'Manage external entries');
     }
 
     public function getDescription()

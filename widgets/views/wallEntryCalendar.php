@@ -19,12 +19,16 @@ $color = $calendar->color ? $calendar->color : $this->theme->variable('info');
             </a>
             <h4 class="media-heading">
                 <a href="<?= $calendar->getUrl(); ?>">
+                    <?= Yii::t('CalendarExtensionModule.widgets_views_wallentry_calendar', "External Calendar: "); ?>
                     <b><?= Html::encode($calendar->title); ?></b>
                 </a>
             </h4>
+            <h5>
+                <?= Yii::t('CalendarExtensionModule.widgets_views_wallentry_calendar', 'A new Calendar has been added.');?>
+            </h5>
         </div>
         <?php if (!empty($calendar->description)) : ?>
-            <div <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarExtensionModule.views_entry_view', "Read full description...") ?>" style="overflow:hidden">
+            <div <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarExtensionModule.widgets_views_wallentry_calendar', "Read full description...") ?>" style="overflow:hidden">
                 <?= MarkdownView::widget(['markdown' => $calendar->description]); ?>
             </div>
         <?php endif; ?>

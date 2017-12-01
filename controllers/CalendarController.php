@@ -177,10 +177,6 @@ class CalendarController extends ContentContainerController
             throw new HttpException(403, Yii::t('CalendarExtensionModule.base', 'You are not allowed to show External Calendar!'));
         }
 
-        if (!$this->canCreateCalendar()) {
-            throw new HttpException(403, Yii::t('CalendarExtensionModule.base', 'External Calendar creation disabled!'));
-        }
-
         $model = new CalendarExtensionCalendar();
         $model->content->setContainer($this->contentContainer);
         $model->content->visibility = Content::VISIBILITY_PUBLIC;
@@ -369,17 +365,6 @@ class CalendarController extends ContentContainerController
         unset($dbModels);
     }
 
-
-
-    /**
-     * Checks the CreatEntry permission for the given user on the given contentContainer.
-     * @return bool
-     */
-    private function canCreateCalendar()
-    {
-        return $this->contentContainer->permissionManager->can(CreateCalendar::class);
-    }/**
-
     /**
      * Checks the ManageEntry permission for the given user on the given contentContainer.
      *
@@ -389,6 +374,6 @@ class CalendarController extends ContentContainerController
      */
     private function canManageCalendar()
     {
-        return $this->contentContainer->permissionManager->can(new ManageCalendar);
+        return $this->contentContainer->permissionManager->can( ManageCalendar::class);
     }
 }

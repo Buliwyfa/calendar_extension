@@ -260,9 +260,8 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
         $start = $this->getStartDateTime();
         $end = $this->getEndDateTime();
 
-            if ($this->all_day)
-            {
-                $end = $end->modify('+1 second');
+        if ($this->all_day) {
+            $end = $end->modify('+1 second');
 //                $diff = $start->diff($end);
 //                if ($diff->days > 1)
 //                {
@@ -270,18 +269,13 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
 //                    $end->setTime('00','00', '00');
 //                }
 //                $end->setTime('00','00');
-                $end->format('Y-m-d');
-            }
+//                $end->format('Y-m-d');
+        }
 
         $title = Html::encode($this->title);
-            $canManage = false;
-            if ($this->content->can($this->managePermission) != null)
-            {
-                $canManage = true;
-            }
 
 
-            // TODO: change url to URL::to() --> if no pretty URL is activated
+        // TODO: change url to URL::to() --> if no pretty URL is activated
         return [
 //            'id' => $this->id,
             'start' => $start,
@@ -292,7 +286,7 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
             'allDay' => $this->all_day,
             'viewUrl' => $this->content->container->createUrl('/calendar_extension/entry/view', ['id' => $this->id, 'cal' => '1']),
 //            'updateUrl' => $this->content->container->createUrl('/calendar_extension/entry/update-ajax', ['id' => $this->id]),
-//            'openUrl' => $this->content->container->createUrl('/calendar_extension/entry/view', ['id' => $this->id]),
+            'openUrl' => $this->content->container->createUrl('/calendar_extension/entry/view', ['id' => $this->id]),
             'color' => $this->calendar->color, // overwrite color of Item_Type
         ];
     }
@@ -367,11 +361,11 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
      */
     public function isAllDay()
     {
-        if($this->all_day === null) {
+        if ($this->all_day === null) {
             return true;
         }
 
-        return (boolean) $this->all_day;
+        return (boolean)$this->all_day;
     }
 
     /**
@@ -435,25 +429,25 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
      *
      * @return string the timezone this item was originally saved, note this is
      */
-    public function getBadge()
-    {
-        return null;
-    }
+//    public function getBadge()
+//    {
+//        return null;
+//    }
 
     public function updateByModel(CalendarExtensionCalendarEntry &$model)
     {
-        $this->title              = $model->title;
-        $this->description        = $model->description;
-        $this->location           = $model->location;
-        $this->last_modified      = $model->last_modified;
-        $this->dtstamp            = $model->dtstamp;
-        $this->start_datetime     = $model->start_datetime;
-        $this->end_datetime       = $model->end_datetime;
-        $this->all_day            = $model->all_day;
+        $this->title = $model->title;
+        $this->description = $model->description;
+        $this->location = $model->location;
+        $this->last_modified = $model->last_modified;
+        $this->dtstamp = $model->dtstamp;
+        $this->start_datetime = $model->start_datetime;
+        $this->end_datetime = $model->end_datetime;
+        $this->all_day = $model->all_day;
         $this->update();
     }
 
-    public function findByUidAndCalAndTs ()
+    public function findByUidAndCalAndTs()
     {
         return self::find()->where(['uid' => $this->uid])->andWhere(['calendar_id' => $this->calendar_id])->andWhere(['>=', 'last_modified', $this->last_modified])->one();
     }

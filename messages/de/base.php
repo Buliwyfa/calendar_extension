@@ -4,6 +4,7 @@ return array(
     'Delete' => 'Löschen',
     'Duration' => 'Dauer',
     'Update' => 'Bearbeiten',
+    'View' => 'Anzeigen',
     'Edit' => 'Bearbeiten',
     'Close' => 'Schließen',
     'Save' => 'Speichern',
@@ -32,4 +33,6 @@ return array(
     'Title and Color' => 'Titel und Farbe',
     'Yes' => 'Ja',
     'Location' => 'Ort',
+    'External Calendar' => 'Externer Kalender',
+    'Manage external calendar here.' => 'Verwalte hier deine externen Kalender.'
 );

@@ -49,17 +49,15 @@ $this->title = Yii::t('CalendarExtensionModule.base', 'External Calendars');
             </table>
         </div>
         </br>
-        <div >
+        <div>
             <?php
-                if($contentContainer instanceof Space) {
-                    $configUrl = $contentContainer->createUrl('/space/manage/module');
-                }
-                elseif ($contentContainer instanceof User) {
-                    $configUrl = $contentContainer->createUrl('/user/account/edit-modules');
-                }
-                else {
-                    $configUrl = '';
-                }
+            if ($contentContainer instanceof Space) {
+                $configUrl = $contentContainer->createUrl('/space/manage/module');
+            } elseif ($contentContainer instanceof User) {
+                $configUrl = $contentContainer->createUrl('/user/account/edit-modules');
+            } else {
+                $configUrl = '';
+            }
             ?>
             <?= Html::a(Yii::t('CalendarExtensionModule.base', 'Back to overview'), $configUrl, ['class' => 'btn btn-sm btn-default']) ?>
         </div>

@@ -38,8 +38,8 @@ class ConfigForm extends \yii\base\Model
     public function attributeLabels()
     {
         return array(
-            'autopost_calendar' => Yii::t('CalendarExtensionModule.forms_ConfigForm', 'Auto post Calendar'),
-            'autopost_entries' => Yii::t('CalendarExtensionModule.forms_ConfigForm', 'Auto post Entries'),
+            'autopost_calendar' => Yii::t('CalendarExtensionModule.model_config', 'Auto post Calendar'),
+            'autopost_entries' => Yii::t('CalendarExtensionModule.model_config', 'Auto post Entries'),
         );
     }
     

@@ -20,7 +20,7 @@ class WallEntryCalendar extends \humhub\modules\content\widgets\WallEntry
     /**
      * @var string
      */
-//    public $managePermission = ManageCalendar::class;
+    public $managePermission = ManageCalendar::class;
 
     /**
      * @inheritdoc
@@ -47,41 +47,6 @@ class WallEntryCalendar extends \humhub\modules\content\widgets\WallEntry
      */
     public $showFiles = false;
 
-//    public function getContextMenu()
-//    {
-//        $canEdit = $this->contentObject->content->canEdit();
-//        if($canEdit) {
-//            $this->controlsOptions = [
-//                'add' => [
-//                    [CloseLink::class, ['calendar' => $this->contentObject], ['sortOrder' => 210]]
-//                ]
-//            ];
-//        }
-//
-//        if($this->stream) {
-//            return parent::getContextMenu();
-//        }
-//
-//        $this->controlsOptions['prevent'] = [\humhub\modules\content\widgets\EditLink::class , \humhub\modules\content\widgets\DeleteLink::class];
-//        $result = parent::getContextMenu();
-//
-//        if($canEdit) {
-//            $this->addControl($result, [DeleteLink::class, ['calendar' => $this->contentObject], ['sortOrder' => 100]]);
-//            $this->addControl($result, [EditLink::class, ['calendar' => $this->contentObject], ['sortOrder' => 200]]);
-//        }
-//
-//        return $result;
-//    }
-
-//    public function getWallEntryViewParams()
-//    {
-//        $params = parent::getWallEntryViewParams();
-//        if($this->isInModal()) {
-//            $params['showContentContainer'] = true;
-//        }
-//        return $params;
-//    }
-
     /**
      * @inheritdoc
      */
@@ -89,7 +54,6 @@ class WallEntryCalendar extends \humhub\modules\content\widgets\WallEntry
     {
         Assets::register($this->getView());
 
-//        return $this->render('wallEntry', array('entry' => $this->contentObject, 'content' => $revision->content, 'justEdited' => $this->justEdited));
         return $this->render('wallEntryCalendar', [
             'calendar' => $this->contentObject,
             'collapse' => $this->collapse,

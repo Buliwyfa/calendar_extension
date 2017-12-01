@@ -34,7 +34,7 @@ $this->title = Yii::t('CalendarExtensionModule.views_admin_index', 'Calendar Ext
         </div>
 
         <div class="form-group">
-            <?= Html::submitButton(Yii::t('CalendarExtensionModule.base', 'Save'), ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton(Yii::t('CalendarExtensionModule.views_admin_index', 'Save'), ['class' => 'btn btn-primary']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

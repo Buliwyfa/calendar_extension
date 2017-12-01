@@ -5,6 +5,8 @@ namespace humhub\modules\calendar_extension\models;
 use ICal\ICal;
 use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\calendar_extension\permissions\ManageCalendar;
+use humhub\modules\content\models\Content;
 
 /**
  * This is the model class for table "calendar_extension_calendar".
@@ -23,12 +25,21 @@ use humhub\modules\content\components\ContentActiveRecord;
  */
 class CalendarExtensionCalendar extends ContentActiveRecord
 {
-    public $eventArray = [];
+    /**
+     * @inheritdoc
+     */
+    public $wallEntryClass = "humhub\modules\calendar_extension\widgets\WallEntryCalendar";
 
     /**
      * @inheritdoc
      */
-    public $autoAddToWall = false;
+    public $managePermission = ManageCalendar::class;
+
+    /**
+     * Flag for Entry Form to set this content to public
+     */
+    public $is_public = Content::VISIBILITY_PUBLIC;
+
 
     /**
      * @inheritdoc
@@ -36,11 +47,6 @@ class CalendarExtensionCalendar extends ContentActiveRecord
      */
     public $streamChannel = null;
     public $silentContentCreation = true;
-
-    /**
-     * @inheritdoc
-     */
-    public $wallEntryClass = "humhub\modules\calendar_extension\widgets\WallEntryCalendar";
 
     /**
      *  init by settings
@@ -71,6 +77,22 @@ class CalendarExtensionCalendar extends ContentActiveRecord
     public static function tableName()
     {
         return 'calendar_extension_calendar';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentName()
+    {
+        return Yii::t('CalendarExtensionModule.base', "External Calendar");
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentDescription()
+    {
+        return $this->title;
     }
 
     /**
@@ -125,6 +147,16 @@ class CalendarExtensionCalendar extends ContentActiveRecord
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getSearchAttributes()
+    {
+        return [
+            'title' => $this->title,
+        ];
+    }
+
     public function afterSave($insert, $changedAttributes)
     {
         return parent::afterSave($insert, $changedAttributes);
@@ -140,16 +172,6 @@ class CalendarExtensionCalendar extends ContentActiveRecord
         }
 
         return parent::beforeDelete();
-    }
-
-    public function getContentName()
-    {
-        return Yii::t('CalendarExtensionModule.base', "Calendar Extension");
-    }
-
-    public function getContentDescription()
-    {
-        return $this->title;
     }
 
     public function getUrl()

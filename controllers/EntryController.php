@@ -29,22 +29,6 @@ class EntryController extends ContentContainerController
     public $hideSidebar = true;
 
     /**
-     * Lists all CalendarExtensionCalendarEntry models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $dataProvider = new ActiveDataProvider([
-            'query' => CalendarExtensionCalendarEntry::find()->contentContainer($this->contentContainer)->all(),
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'contentContainer' => $this->contentContainer,
-        ]);
-    }
-
-    /**
      * Displays a single CalendarExtensionCalendarEntry model.
      * @param integer $id
      * @param null $cal
@@ -60,9 +44,9 @@ class EntryController extends ContentContainerController
         }
 
         // We need the $cal information, since the update redirect in case of fullcalendar view is other than stream view
-//        if ($cal) {
-//            return $this->renderModal($model, $cal);
-//        }
+        if ($cal) {
+            return $this->renderModal($model, $cal);
+        }
 
         return $this->render('view', [
             'model' => $model,
@@ -77,60 +61,6 @@ class EntryController extends ContentContainerController
             'editUrl' => $this->contentContainer->createUrl('/calendar_extension/entry/update', ['id' => $model->id, 'cal' => $cal]),
             'canManageEntries' => $this->canManageEntries(),
             'contentContainer' => $this->contentContainer,
-        ]);
-    }
-
-//    public function actionModal($id)
-//    {
-//        $model = $this->findModel($id);
-//
-//        if(!$model) {
-//            throw new HttpException(404);
-//        }
-//
-////        if(!$entry->content->canView()) {
-////            throw new HttpException(403);
-////        }
-//
-//        return $this->renderAjax('modal', [
-//            'model' => $model,
-//            'editUrl' => '',
-//            'canManageEntries' => false,
-//        ]);
-//    }
-
-    /**
-     * Creates a new CalendarExtensionCalendarEntry model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @param null $cal
-     * @return mixed
-     * @throws HttpException
-     */
-    public function actionCreate($cal = null)
-    {
-        if ($this->canCreateEntries()) {
-            $model = new CalendarExtensionCalendarEntry();
-            $model->content->contentContainer = $this->contentContainer;
-//            $model->content->visibility = Content::VISIBILITY_PRIVATE;
-//            $model->scenario = 'create';
-        }
-
-        if (!$model) {
-            throw new HttpException(404);
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if(empty($cal)) {
-                return ModalClose::widget(['saved' => true]);
-            } else {
-                return $this->renderModal($model, 1);
-            }
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-            'contentContainer' => $this->contentContainer,
-            'editUrl' => $this->contentContainer->createUrl('/calendar_extension/entry/update', ['id' => $model->id, 'cal' => $cal]),
         ]);
     }
 
@@ -232,15 +162,6 @@ class EntryController extends ContentContainerController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-
-    /**
-     * Checks the CreatEntry permission for the given user on the given contentContainer.
-     * @return bool
-     */
-    private function canCreateEntries()
-    {
-        return $this->contentContainer->permissionManager->can(CreateEntry::class);
     }
 
     /**
