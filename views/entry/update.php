@@ -8,9 +8,11 @@ use humhub\widgets\ModalButton;
 
 /* @var $this yii\web\View */
 /* @var $model humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry */
+/* @var $editUrl string */
+/* @var $contentContainer \humhub\modules\content\models\ContentContainer */
 
 $header = Yii::t('CalendarExtensionModule.base', 'Update {modelClass}: ', [
-        'modelClass' => 'Calendar Extension Calendar Entry',
+        'modelClass' => Yii::t('CalendarExtensionModule.base', 'External Calendar Entry')
     ]) . $model->title;
 $model->calendar->color = empty($model->calendar->color) ? $this->theme->variable('info') : $model->calendar->color;
 
@@ -18,7 +20,7 @@ $model->calendar->color = empty($model->calendar->color) ? $this->theme->variabl
 <?php ModalDialog::begin(['header' => $header, 'closable' => false]) ?>
     <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
-    <div id="calendar-entry-form" data-ui-widget="calendar.Form" data-ui-init>
+<!--    <div id="calendar-entry-form" data-ui-widget="calendar.Form" data-ui-init>-->
         <div class="modal-body">
 
     <?= $form->field($model, 'uid')->textInput(['maxlength' => true, 'disabled' => true]) ?>
@@ -35,8 +37,8 @@ $model->calendar->color = empty($model->calendar->color) ? $this->theme->variabl
 
     <?= $form->field($model, 'all_day')->checkbox() ?>
     </div>
-</div>
-
+<!--</div>-->
+s
     <hr>
 
     <div class="modal-footer">

@@ -24,14 +24,16 @@ $this->title = Yii::t('CalendarExtensionModule.base', 'External Calendars');
                 <tr>
                     <th scope="col"><?= Yii::t('CalendarExtensionModule.base', 'ID'); ?></th>
                     <th scope="col"><?= Yii::t('CalendarExtensionModule.base', 'Title'); ?></th>
+                    <th scope="col"><?= Yii::t('CalendarExtensionModule.base', 'Public'); ?></th>
                     <th scope="col"><?= Yii::t('CalendarExtensionModule.base', 'Actions'); ?></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach ($models as $model): ?>
                     <tr>
-                        <td><?= $model->id; ?></td>
-                        <td><?= $model->title; ?></td>
+                        <td><?= $model->id ?></td>
+                        <td><?= $model->title ?></td>
+                        <td><?= ($model->public) ? Yii::t('CalendarExtensionModule.base', 'Public') : Yii::t('CalendarExtensionModule.base', 'Private') ?></td>
                         <td>
                             <?= Html::a('<i class="fa fa-eye view"></i> ' . Yii::t('CalendarExtensionModule.base', 'View'), $contentContainer->createUrl('/calendar_extension/calendar/view', ['id' => $model->id]), ['class' => 'btn-sm btn-info']) ?>
                             <?= Html::a('<i class="fa fa-pencil-square-o edit"></i> ' . Yii::t('CalendarExtensionModule.base', 'Update'), $contentContainer->createUrl('/calendar_extension/calendar/update', ['id' => $model->id]), ['class' => 'btn-sm btn-primary']) ?>

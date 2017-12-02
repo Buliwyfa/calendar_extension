@@ -21,8 +21,6 @@ return array(
     'All Day' => 'Ganztägig',
     'Timezone' => 'Zeitzone',
     'UID' => 'UID',
-    'Update successfull!' => 'Synchronisation erfolgreich!',
-    'Update failed!' => 'Synchronisation fehlgeschlagen',
     'External Calendars' => 'Externe Kalender',
     'Add Calendar' => 'Kalender hinzufügen',
     'Add external Calendar' => 'Externen Kalender hinzufügen',
@@ -34,5 +32,6 @@ return array(
     'Yes' => 'Ja',
     'Location' => 'Ort',
     'External Calendar' => 'Externer Kalender',
+    'External Calendar Entry' => 'Externen Kalendereintrag',
     'Manage external calendar here.' => 'Verwalte hier deine externen Kalender.'
 );

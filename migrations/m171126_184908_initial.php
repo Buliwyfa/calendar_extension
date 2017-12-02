@@ -11,6 +11,7 @@ class m171126_184908_initial extends Migration
             'title' => 'varchar(255) NOT NULL',
             'description' => 'TEXT NULL',
             'url' => 'varchar(255) NOT NULL',
+            'public' => 'tinyint(1) NOT NULL DEFAULT 0',
             'time_zone' => 'varchar(60) DEFAULT NULL',
             'color' => 'varchar(7)',
             'version' => 'varchar(10)',

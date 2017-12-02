@@ -4,31 +4,17 @@ namespace humhub\modules\calendar_extension;
 
 use humhub\modules\calendar_extension\integration\calendar\CalendarExtension;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
-use humhub\modules\calendar_extension\permissions\ShowOnSidebar;
+use humhub\modules\calendar_extension\models\CalendarExtensionCalendar;
+use humhub\modules\calendar_extension\SyncUtils;
+use ICal\ICal;
+use humhub\modules\calendar_extension\CalendarUtils;
+use humhub\modules\content\models\Content;
 use Yii;
 use yii\helpers\Url;
 use yii\base\Object;
 
 class Events extends Object
 {
-
-//    public static function onSpaceMenuInit($event)
-//    {
-//        if ($event->sender->space !== null && $event->sender->space->isModuleEnabled('calendar_extension') && $event->sender->space->isMember() && $event->sender->space->permissionManager->can(ShowOnSidebar::class)) {
-////            echo '<pre>';
-////            print_r ($event);
-////            echo '</pre>';
-////            die();
-//
-//            $event->sender->addItem([
-//                'label' => Yii::t('CalendarExtensionModule.base', 'Calendar Extension'),
-//                'group' => 'modules',
-//                'url' => $event->sender->space->createUrl('/calendar_extension/calendar/index'),
-//                'icon' => '<i class="fa fa-certificate" style="color: #6fdbe8;"></i>',
-//                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar_extension'),
-//            ]);
-//        }
-//    }
 
     /**
  * @param $event \humhub\modules\calendar\interfaces\CalendarItemTypesEvent
@@ -75,6 +61,39 @@ class Events extends Object
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'calendar_extension' && Yii::$app->controller->id == 'admin'),
             'sortOrder' => 99999,
         ));
+    }
+
+    public static function onCron()
+    {
+        $calendarModels = CalendarExtensionCalendar::find()->all();
+        foreach ($calendarModels as $calendarModel) {
+            if ($calendarModel) {
+                $ical = SyncUtils::createICal($calendarModel->url);
+                if (!$ical) {
+                    return;
+                }
+
+                // add info to CalendarModel
+                $calendarModel->addAttributes($ical);
+                $calendarModel->save();
+
+                // check events
+                if ($ical->hasEvents()) {
+                    // get formatted array
+                    $events = $ical->events();
+
+                    // create Entry-models without safe
+                    $models = SyncUtils::getModels($events, $calendarModel);
+                    $result = SyncUtils::checkAndSubmitModels($models, $calendarModel->id);
+                    if (!$result) {
+                        return;
+                    }
+                }
+            } else {
+                return;
+            }
+        }
+        return true;
     }
 
 }

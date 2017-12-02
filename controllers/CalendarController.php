@@ -3,6 +3,7 @@
 namespace humhub\modules\calendar_extension\controllers;
 
 
+use humhub\modules\calendar_extension\SyncUtils;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\HttpException;
@@ -78,8 +79,7 @@ class CalendarController extends ContentContainerController
                 'model' => $model,
                 'contentContainer' => $this->contentContainer,
             ]);
-        }
-        else {
+        } else {
             return $this->redirect($this->contentContainer->createUrl('create', array('id' => $id)));
         }
     }
@@ -91,78 +91,79 @@ class CalendarController extends ContentContainerController
      */
     public function actionSync($id)
     {
-//        $calendarModel = $this->findModel($id);
+        $message = '';
         $calendarModel = CalendarExtensionCalendar::find()->contentContainer($this->contentContainer)->where(['calendar_extension_calendar.id' => $id])->one();
 
         if ($calendarModel) {
-            try {
-                // load ical and parse it
-                $ical = new ICal($calendarModel->url, array(
-                    'defaultSpan' => 2,     // Default value
-                    'defaultTimeZone' => Yii::$app->timeZone,
-                    'defaultWeekStart' => 'MO',  // Default value
-                    'skipRecurrence' => false, // Default value
-                    'useTimeZoneWithRRules' => false, // Default value
-                ));
-            } catch (\Exception $e) {
-                die($e);
+            $ical = SyncUtils::createICal($calendarModel->url);
+            if (!$ical) {
+                $message = Yii::t('CalendarExtensionModule.sync_result', 'Error while creating ical... Check if link is reachable.');
             }
+            else {
+                // add info to CalendarModel
+                $calendarModel->addAttributes($ical);
+                $calendarModel->save();
 
-            // add info to CalendarModel
-            $calendarModel->addAttributes($ical);
-            $calendarModel->save();
+                // check events
+                if ($ical->hasEvents()) {
+                    // get formatted array
+                    $events = $ical->events();
 
-            // check events
-            if ($ical->hasEvents()) {
-                // get formatted array
-                $events = $ical->events();
-
-                // create Entry-models without safe
-                $models = [];
-                foreach ($events as $event) {
-                    $model = new CalendarExtensionCalendarEntry();
-                    $model->uid = $event->uid;
-                    $model->calendar_id = $calendarModel->id;
-                    $model->title = $event->summary;
-                    $model->description = $event->description;
-                    $model->location = $event->location;
-                    //$model->last_modified = $event->last_modified_array[1];
-//                    $last_modified = $ical->iCalDateToDateTime($event->last_modified, true);    // stores at UTC
-                    $model->last_modified = CalendarUtils::formatDateTimeToString($event->last_modified);
-                    //$model->dtstamp = $event->dtstamp;
-//                    $dtstamp = $ical->iCalDateToDateTime($event->dtstamp, true);    // stores at UTC
-                    $model->dtstamp = CalendarUtils::formatDateTimeToString($event->dtstamp);
-                    //$model->start_datetime = $event->dtstart;
-//                    $start = $ical->iCalDateToDateTime($event->dtstart, true);    // stores at UTC
-                    $model->start_datetime = CalendarUtils::formatDateTimeToString($event->dtstart);
-                    //$model->end_datetime = $event->dtend;
-//                    $end = $ical->iCalDateToDateTime($event->dtend, true);    // stores at UTC
-                    $model->end_datetime = CalendarUtils::formatDateTimeToString($event->dtend);
-                    $model->time_zone = Yii::$app->timeZone;
-                    $model->all_day = CalendarUtils::checkAllDay($event->dtstart, $event->dtend);
-
-
-                    $model->content->setContainer($this->contentContainer);
-                    $model->content->visibility = Content::VISIBILITY_PUBLIC;
-//                    $model->scenario = 'create';
-
-                    array_push($models, $model);
-                    unset($model);
+                    // create Entry-models without safe
+                    $models = SyncUtils::getModels($events, $calendarModel);
+                    $result = SyncUtils::checkAndSubmitModels($models, $calendarModel->id);
+                    if (!$result) {
+                        $message = Yii::t('CalendarExtensionModule.sync_result', 'Error while check and submit models...');
+                    }
+                    else {
+                        $message = Yii::t('CalendarExtensionModule.sync_result', 'Sync successfull!');
+                    }
                 }
-                $this->checkAndSubmitModels($models, $calendarModel->id);
             }
-            $message = Yii::t('CalendarExtensionModule.base', 'Update successfull!');
         } else {
-            $message = Yii::t('CalendarExtensionModule.base', 'Update failed!');
+            $message = Yii::t('CalendarExtensionModule.sync_result', 'Calendar not found!');
         }
 
         return $this->renderAjax('result', [
             'message' => $message,
         ]);
-
-        return $this->asJson(['success' => true]);
     }
 
+    /**
+     * @return string
+     */
+    public static function actionCron()
+    {
+        $calendarModels = CalendarExtensionCalendar::find()->all();
+        foreach ($calendarModels as $calendarModel) {
+            if ($calendarModel) {
+                $ical = SyncUtils::createICal($calendarModel->url);
+                if (!$ical) {
+                    return;
+                }
+
+                // add info to CalendarModel
+                $calendarModel->addAttributes($ical);
+                $calendarModel->save();
+
+                // check events
+                if ($ical->hasEvents()) {
+                    // get formatted array
+                    $events = $ical->events();
+
+                    // create Entry-models without safe
+                    $models = SyncUtils::getModels($events, $calendarModel);
+                    $result = SyncUtils::checkAndSubmitModels($models, $calendarModel->id);
+                    if (!$result) {
+                        return;
+                    }
+                }
+            } else {
+                return;
+            }
+        }
+        return true;
+    }
 
     /**
      * Creates a new CalendarExtensionCalendar model.
@@ -178,11 +179,11 @@ class CalendarController extends ContentContainerController
         }
 
         $model = new CalendarExtensionCalendar();
-        $model->content->setContainer($this->contentContainer);
-        $model->content->visibility = Content::VISIBILITY_PUBLIC;
 //        $model->title = Yii::$app->request->get('title');
 //        $model->scenario = 'create';
 
+        $model->content->setContainer($this->contentContainer);
+//        $model->content->visibility = ($model->load(Yii::$app->request->post('public'))) ? Content::VISIBILITY_PUBLIC : Content::VISIBILITY_PRIVATE ;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             try {
@@ -200,7 +201,8 @@ class CalendarController extends ContentContainerController
                     'contentContainer' => $this->contentContainer
                 ]);
             }
-
+            $model->content->visibility = ($model->public) ? Content::VISIBILITY_PUBLIC : Content::VISIBILITY_PRIVATE ;
+            $model->save();
             return $this->redirect($this->contentContainer->createUrl('view', array('id' => $model->id)));
         } else {
             return $this->render('create', [
@@ -294,24 +296,6 @@ class CalendarController extends ContentContainerController
         }
     }
 
-    /**
-     * Todo: code a better way to send Calendar-model with array of Entry-Models
-     * @param array $entryArray
-     * @param $calendar_id
-     * @return array
-     */
-    protected function getModels(array $entryArray, $calendar_id)
-    {
-        $temp = [];
-        foreach ($entryArray as $item) {
-            $model = new CalendarExtensionCalendarEntry($item);
-            $model->calendar_id = $calendar_id;
-            array_push($temp, $model);
-            unset($model);
-        }
-        return $temp;
-    }
-
 
     /**
      * check for existing dbEntries and sync to list
@@ -319,7 +303,7 @@ class CalendarController extends ContentContainerController
      * @param array $models
      * @param $cal_id
      */
-    protected function checkAndSubmitModels(Array &$models, $cal_id)
+    public static function checkAndSubmitModels(Array &$models, $cal_id)
     {
         $dbModels = CalendarExtensionCalendarEntry::find()->where(['calendar_id' => $cal_id])->all();
         $keepInDb = [];
@@ -349,9 +333,6 @@ class CalendarController extends ContentContainerController
         // remove arrays to keep in db
         foreach ($dbModels as $key => $val) {
             foreach ($keepInDb as $item) {
-//                echo '<pre>';
-//                print_r ($val);
-//                echo '</pre>';
                 if ($val === $item) {
                     unset($dbModels[$key]);
                 }
@@ -374,6 +355,6 @@ class CalendarController extends ContentContainerController
      */
     private function canManageCalendar()
     {
-        return $this->contentContainer->permissionManager->can( ManageCalendar::class);
+        return $this->contentContainer->permissionManager->can(ManageCalendar::class);
     }
 }

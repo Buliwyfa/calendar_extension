@@ -11,7 +11,7 @@ use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
 
 $color = $calendarEntry->calendar->color ? $calendarEntry->calendar->color : $this->theme->variable('info');
 ?>
-<div class="media event" style="" data-action-component="calendar.CalendarEntry" data-calendar-entry="<?= $calendarEntry->id ?>">
+<div class="media event">
     <div class="y" style="padding-left:10px; border-left: 3px solid <?= $color ?>">
         <div class="media-body clearfix">
             <a href="<?= $calendarEntry->getUrl(); ?>" class="pull-left" style="margin-right: 10px">

@@ -14,6 +14,7 @@ use humhub\modules\content\models\Content;
  * @property integer $id
  * @property string $title
  * @property string $url
+ * @property integer $public    Set if the Content should be public or private
  * @property string $time_zone The timeZone these entries was saved, note the dates itself are always saved in app timeZone
  * @property string $color
  * @property string $version    The ical-version, the calendar is stored
@@ -38,7 +39,7 @@ class CalendarExtensionCalendar extends ContentActiveRecord
     /**
      * Flag for Entry Form to set this content to public
      */
-    public $is_public = Content::VISIBILITY_PUBLIC;
+//    public $is_public = Content::VISIBILITY_PUBLIC;
 
 
     /**
@@ -105,6 +106,7 @@ class CalendarExtensionCalendar extends ContentActiveRecord
             [['time_zone'], 'string', 'max' => 60],
             [['color'], 'string', 'max' => 7],
             [['url'], 'validateURL'],
+            [['public'], 'integer'],
         ];
     }
 
@@ -121,15 +123,15 @@ class CalendarExtensionCalendar extends ContentActiveRecord
                 'defaultTimeZone' => Yii::$app->timeZone,
             ));
         } catch (\Exception $e) {
-            $this->addError($attribute, Yii::t('CalendarExtensionModule.base', "No valid ical url!"));
+            $this->addError($attribute, Yii::t('CalendarExtensionModule.sync_result', "No valid ical url! Try an url with http/https."));
         }
     }
 
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['create'] = ['title', 'url'];
-        $scenarios['admin'] = ['title', 'url'];
+        $scenarios['create'] = ['title', 'url', 'public'];
+        $scenarios['admin'] = ['title', 'url', 'public'];
         return $scenarios;
     }
 
@@ -142,6 +144,7 @@ class CalendarExtensionCalendar extends ContentActiveRecord
             'id' => Yii::t('CalendarExtensionModule.base', 'ID'),
             'title' => Yii::t('CalendarExtensionModule.base', 'Title'),
             'url' => Yii::t('CalendarExtensionModule.base', 'Url'),
+            'public' => Yii::t('CalendarExtensionModule.base', 'Public'),
             'time_zone' => Yii::t('CalendarExtensionModule.base', 'Timezone'),
             'color' => Yii::t('CalendarExtensionModule.base', 'Color'),
         ];

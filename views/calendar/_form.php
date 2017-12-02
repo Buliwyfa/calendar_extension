@@ -30,6 +30,9 @@ use humhub\widgets\ColorPickerField;
 
     <?= $form->field($model, 'url')->textarea(['rows' => 6]) ?>
 
+
+    <?= $form->field($model, 'public')->checkbox() ?>
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('CalendarExtensionModule.base', 'Save') : Yii::t('CalendarExtensionModule.base', 'Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

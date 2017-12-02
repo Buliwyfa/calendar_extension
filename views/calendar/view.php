@@ -36,6 +36,7 @@ $this->title = $model->title;
                     //            'id',
                     'title',
                     'url:ntext',
+                    'public:boolean',
                     'time_zone',
 //                    'color',
                     'version',
