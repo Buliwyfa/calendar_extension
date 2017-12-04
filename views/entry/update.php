@@ -18,10 +18,9 @@ $model->calendar->color = empty($model->calendar->color) ? $this->theme->variabl
 
 ?>
 <?php ModalDialog::begin(['header' => $header, 'closable' => false]) ?>
-    <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
+<?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
-<!--    <div id="calendar-entry-form" data-ui-widget="calendar.Form" data-ui-init>-->
-        <div class="modal-body">
+<div class="modal-body">
 
     <?= $form->field($model, 'uid')->textInput(['maxlength' => true, 'disabled' => true]) ?>
 
@@ -36,14 +35,13 @@ $model->calendar->color = empty($model->calendar->color) ? $this->theme->variabl
     <?= $form->field($model, 'end_datetime')->widget(DateTimePicker::className(), ['type' => DateTimePicker::TYPE_COMPONENT_APPEND, 'pluginOptions' => ['format' => 'yyyy-mm-dd hh:ii:ss', 'autoclose' => false]]) ?>
 
     <?= $form->field($model, 'all_day')->checkbox() ?>
-    </div>
-<!--</div>-->
-s
-    <hr>
+</div>
 
-    <div class="modal-footer">
-        <?= ModalButton::submitModal($editUrl); ?>
-        <?= ModalButton::cancel(); ?>
-    </div>
-    <?php ActiveForm::end(); ?>
+<hr>
+
+<div class="modal-footer">
+    <?= ModalButton::submitModal($editUrl); ?>
+    <?= ModalButton::cancel(); ?>
+</div>
+<?php ActiveForm::end(); ?>
 <?php ModalDialog::end() ?>

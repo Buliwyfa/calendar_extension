@@ -105,6 +105,7 @@ class CalendarExtensionCalendar extends ContentActiveRecord
             [['title', 'url'], 'string', 'max' => 255],
             [['time_zone'], 'string', 'max' => 60],
             [['color'], 'string', 'max' => 7],
+            [['url'],'url','defaultScheme' => 'http', 'message' => Yii::t('CalendarExtensionModule.sync_result', "No valid ical url! Try an url with http / https.")],
             [['url'], 'validateURL'],
             [['public'], 'integer'],
         ];
@@ -123,7 +124,7 @@ class CalendarExtensionCalendar extends ContentActiveRecord
                 'defaultTimeZone' => Yii::$app->timeZone,
             ));
         } catch (\Exception $e) {
-            $this->addError($attribute, Yii::t('CalendarExtensionModule.sync_result', "No valid ical url! Try an url with http/https."));
+            $this->addError($attribute, Yii::t('CalendarExtensionModule.sync_result', "No valid ical url! Try an url with http / https."));
         }
     }
 

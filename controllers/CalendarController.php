@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\calendar_extension\CalendarUtils;
+use humhub\modules\space\models\Space;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendar;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
 use ICal\ICal;
