@@ -25,7 +25,7 @@ $this->title = $model->title;
                     'method' => 'post',
                 ],
             ]) ?>
-            <?= ModalButton::primary(Yii::t('CalendarExtensionModule.views_calendar', 'Sync Calendar'))->post('sync?id=' . $model->id)->sm()->icon('fa-refresh')->right();?>
+            <?= ModalButton::primary(Yii::t('CalendarExtensionModule.views_calendar', 'Sync Calendar'))->post($contentContainer->createUrl('/calendar_extension/calendar/sync', ['id' => $model->id]))->sm()->icon('fa-refresh')->right();?>
         </div>
 
         </br>
