@@ -2,17 +2,19 @@
 
 namespace humhub\modules\calendar_extension\controllers;
 
-
-use humhub\modules\calendar_extension\SyncUtils;
 use Yii;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
+use humhub\modules\calendar_extension\SyncUtils;
 use humhub\modules\calendar_extension\permissions\ManageCalendar;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendar;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
+
+require_once (Yii::$app->basePath . '/modules/calendar_extension/vendors/johngrogg/ics-parser/src/ICal/Event.php');
+require_once (Yii::$app->basePath . '/modules/calendar_extension/vendors/johngrogg/ics-parser/src/ICal/ICal.php');
 use ICal\ICal;
 
 

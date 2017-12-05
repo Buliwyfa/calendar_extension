@@ -2,11 +2,14 @@
 
 namespace humhub\modules\calendar_extension\models;
 
-
 use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\calendar_extension\permissions\ManageCalendar;
 use humhub\modules\search\interfaces\Searchable;
+
+require_once (Yii::$app->basePath . '/modules/calendar_extension/vendors/johngrogg/ics-parser/src/ICal/Event.php');
+require_once (Yii::$app->basePath . '/modules/calendar_extension/vendors/johngrogg/ics-parser/src/ICal/ICal.php');
+
 use ICal\ICal;
 
 

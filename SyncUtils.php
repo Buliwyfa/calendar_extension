@@ -6,6 +6,9 @@ use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendar;
+
+require_once (Yii::$app->basePath . '/modules/calendar_extension/vendors/johngrogg/ics-parser/src/ICal/Event.php');
+require_once (Yii::$app->basePath . '/modules/calendar_extension/vendors/johngrogg/ics-parser/src/ICal/ICal.php');
 use ICal\ICal;
 
 
