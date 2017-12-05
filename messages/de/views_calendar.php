@@ -10,6 +10,6 @@ return array (
     'Calendar' => 'Kalender',
     'Update {modelClass}: ' => 'Bearbeite {modelClass}: ',
     'Calendar: {modelClass}' => 'Kalender: {modelClass}',
-    'Sync Calendar' => 'Kalender synchroniesieren',
+    'Sync Calendar' => 'Kalender synchronisieren',
     'Title and Color' => 'Titel und Farbe',
 );
