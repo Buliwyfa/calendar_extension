@@ -8,6 +8,7 @@ use humhub\modules\search\interfaces\Searchable;
 use Yii;
 use DateTime;
 use humhub\libs\DbDateValidator;
+use humhub\widgets\Label;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\calendar_extension\permissions\ManageEntry;
 use humhub\modules\calendar_extension\widgets\WallEntry;
@@ -222,6 +223,7 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
 //            'updateUrl' => $this->content->container->createUrl('/calendar_extension/entry/update-ajax', ['id' => $this->id]),
             'openUrl' => $this->content->container->createUrl('/calendar_extension/entry/view', ['id' => $this->id]),
             'color' => $this->calendar->color, // overwrite color of Item_Type
+//            'badge' => Label::asColor($this->calendar->color, $this->calendar->title)->icon('fa-calendar-o')->right(),    // change badge to name of external calendar
         ];
     }
 
@@ -275,16 +277,6 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
     {
         return $this->title;
     }
-
-    /**
-     * Returns a badge for the snippet
-     *
-     * @return string the timezone this item was originally saved, note this is
-     */
-//    public function getBadge()
-//    {
-//        return null;
-//    }
 
     public function updateByModel(CalendarExtensionCalendarEntry &$model)
     {

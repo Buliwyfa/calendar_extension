@@ -31,7 +31,7 @@ class CalendarController extends ContentContainerController
     {
         if (parent::beforeAction($action)) {
             if ($this->contentContainer instanceof Space && !$this->contentContainer->isMember()) {
-                throw new HttpException(403, Yii::t('base', 'You need to be member of the space "%space_name%" to access this example!', ['%space_name%' => $this->contentContainer->name]));
+                throw new HttpException(403, Yii::t('CalendarExtensionModule.permissions', 'You need to be member of the space "%space_name%" to access this calendar!', ['%space_name%' => $this->contentContainer->name]));
             }
             return true;
         }
@@ -47,7 +47,7 @@ class CalendarController extends ContentContainerController
     public function actionIndex()
     {
         if (!$this->canManageCalendar()) {
-            throw new HttpException(403, Yii::t('CalendarExtensionModule.base', 'You are not allowed to show External Calendar!'));
+            throw new HttpException(403, Yii::t('CalendarExtensionModule.permissions', 'You are not allowed to manage External Calendar!'));
         }
 
         $models = CalendarExtensionCalendar::find()->contentContainer($this->contentContainer)->all();
@@ -68,7 +68,7 @@ class CalendarController extends ContentContainerController
     {
 
         if (!$this->canManageCalendar()) {
-            throw new HttpException(403, Yii::t('CalendarExtensionModule.base', 'You are not allowed to show External Calendar!'));
+            throw new HttpException(403, Yii::t('CalendarExtensionModule.permissions', 'You are not allowed to manage External Calendar!'));
         }
 
         $model = $this->findModel($id);
@@ -174,7 +174,7 @@ class CalendarController extends ContentContainerController
     {
 
         if (!$this->canManageCalendar()) {
-            throw new HttpException(403, Yii::t('CalendarExtensionModule.base', 'You are not allowed to show External Calendar!'));
+            throw new HttpException(403, Yii::t('CalendarExtensionModule.permissions', 'You are not allowed to manage External Calendar!'));
         }
 
         $model = new CalendarExtensionCalendar();
@@ -222,7 +222,7 @@ class CalendarController extends ContentContainerController
     public function actionUpdate($id)
     {
         if (!$this->canManageCalendar()) {
-            throw new HttpException(403, Yii::t('CalendarExtensionModule.base', 'You are not allowed to show External Calendar!'));
+            throw new HttpException(403, Yii::t('CalendarExtensionModule.permissions', 'You are not allowed to manage External Calendar!'));
         }
 
 //        $model = $this->findModel($id);
@@ -266,10 +266,6 @@ class CalendarController extends ContentContainerController
 
         if ($model === null) {
             throw new HttpException(404, Yii::t('base', 'Page not found.'));
-        }
-
-        if (!$this->canManageCalendar()) {
-            throw new HttpException(403, Yii::t('CalendarExtensionModule.base', 'Permission denied. You have no administration rights.'));
         }
 
         $model->delete();

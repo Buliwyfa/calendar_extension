@@ -80,7 +80,7 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
         $entry = $this->contentObject;
 
         return $this->render('wallEntry', [
-            'calendarEntry' => $this->contentObject,
+            'calendarEntry' => $entry,
             'collapse' => $this->collapse,
             'contentContainer' => $entry->content->container
         ]);

@@ -34,7 +34,6 @@ class CalendarExtension extends Object
      */
     public static function addItemTypes($event)
     {
-        /* @var $meetings Meeting[] */
         $event->addType(static::ITEM_TYPE_KEY, [
             'title' => Yii::t('CalendarExtensionModule.base', 'Entry'),
             'color' => static::DEFAULT_COLOR,
