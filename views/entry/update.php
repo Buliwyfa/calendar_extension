@@ -22,19 +22,12 @@ $model->calendar->color = empty($model->calendar->color) ? $this->theme->variabl
 
 <div class="modal-body">
 
-    <?= $form->field($model, 'uid')->textInput(['maxlength' => true, 'disabled' => true]) ?>
-
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'location')->textarea(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'start_datetime')->widget(DateTimePicker::className(), ['type' => DateTimePicker::TYPE_COMPONENT_APPEND, 'pluginOptions' => ['format' => 'yyyy-mm-dd hh:ii:ss', 'autoclose' => false]]) ?>
-
-    <?= $form->field($model, 'end_datetime')->widget(DateTimePicker::className(), ['type' => DateTimePicker::TYPE_COMPONENT_APPEND, 'pluginOptions' => ['format' => 'yyyy-mm-dd hh:ii:ss', 'autoclose' => false]]) ?>
-
-    <?= $form->field($model, 'all_day')->checkbox() ?>
 </div>
 
 <hr>

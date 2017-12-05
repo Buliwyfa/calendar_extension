@@ -150,6 +150,7 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
             [['end_datetime'], DbDateValidator::className()],
             [['all_day'], 'integer'],
             [['title'], 'string', 'max' => 200],
+            [['location'], 'string'],
             [['end_datetime'], 'validateEndTime'],
             [['description'], 'safe'],
         ];
@@ -198,6 +199,7 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
             'title' => $this->title,
             'description' => $this->description,
             'location' => $this->location,
+            'calendar' => $this->calendar->title,
         ];
     }
 

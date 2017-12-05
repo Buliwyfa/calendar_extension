@@ -7,6 +7,7 @@ use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\calendar_extension\permissions\ManageCalendar;
 use humhub\modules\content\models\Content;
+use humhub\modules\search\interfaces\Searchable;
 
 /**
  * This is the model class for table "calendar_extension_calendar".
@@ -24,7 +25,7 @@ use humhub\modules\content\models\Content;
  * property CalendarExtensionEvent[] $calendarExtensionEvents
  * @property CalendarExtensionCalendarEntry[] $CalendarExtensionCalendarEntries
  */
-class CalendarExtensionCalendar extends ContentActiveRecord
+class CalendarExtensionCalendar extends ContentActiveRecord implements Searchable
 {
     /**
      * @inheritdoc
