@@ -11,5 +11,7 @@ return array(
     'Entry' => 'Eintrag',
     'Are you sure you want to delete this item?' => 'Wollen Sie diesen Eintrag wirklich löschen?',
     'Yes' => 'Ja',
-    'Manage external calendar here.' => 'Verwalte hier deine externen Kalender.'
+    'Manage external calendar here.' => 'Verwalte hier deine externen Kalender.',
+    'Manage external calendar for your profile.' => 'Verwalte hier externe Kalender für dein Profil.',
+    'External Calendar' => 'Externer Kalender'
 );
