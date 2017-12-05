@@ -13,12 +13,7 @@ __Author:__ David Born
 <https://github.com/staxDB/calendar_extenstion/issues>
 
 ## ToDos
-- Security & permission management
-- rebuild as ContentActiveRecord and ContentContainerController (actually ActiveRecord & Controller)
-- fix bug with calendar-widget "next events"
-- make events searchable
-- make auto sync
-- check if module "calendar" is enabled
+- fix bug with calendar-widget "upcoming events"
 
 
 This Module uses the Calendar UI Interface in v0.6 - [see dokumentation](https://github.com/humhub/humhub-modules-calendar/blob/master/docs/interface.md)
