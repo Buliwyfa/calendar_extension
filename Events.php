@@ -2,45 +2,37 @@
 
 namespace humhub\modules\calendar_extension;
 
-use humhub\modules\calendar_extension\integration\calendar\CalendarExtension;
-use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
-use humhub\modules\calendar_extension\models\CalendarExtensionCalendar;
-use humhub\modules\calendar_extension\SyncUtils;
-use ICal\ICal;
-use humhub\modules\calendar_extension\CalendarUtils;
-use humhub\modules\content\models\Content;
 use Yii;
 use yii\helpers\Url;
 use yii\base\Object;
+use humhub\modules\calendar_extension\models\CalendarExtensionCalendar;
+use humhub\modules\calendar_extension\integration\calendar\CalendarExtension;
 
 class Events extends Object
 {
 
     /**
- * @param $event \humhub\modules\calendar\interfaces\CalendarItemTypesEvent
- * @return mixed
- */
+     * @param $event \humhub\modules\calendar\interfaces\CalendarItemTypesEvent
+     * @return mixed
+     */
     public static function onGetCalendarItemTypes($event)
     {
         $contentContainer = $event->contentContainer;
 
-        if(!$contentContainer || $contentContainer->isModuleEnabled('calendar_extension')) {
-//            echo '<pre>';
-//            print_r($event);
-//            echo '</pre>';
-//            die();
+        if (!$contentContainer || $contentContainer->isModuleEnabled('calendar_extension')) {
             CalendarExtension::addItemTypes($event);
-//            $event->addType(CalendarExtensionCalendarEntry::findAll());
         }
     }
 
 
+    /**
+     * @param $event
+     */
     public static function onFindCalendarItems($event)
     {
         $contentContainer = $event->contentContainer;
 
-        if(!$contentContainer || $contentContainer->isModuleEnabled('calendar_extension')) {
-            /* @var $entry Entry[] */
+        if (!$contentContainer || $contentContainer->isModuleEnabled('calendar_extension')) {
             CalendarExtension::addItems($event);
         }
     }
@@ -63,6 +55,12 @@ class Events extends Object
         ));
     }
 
+    /**
+     * Defines what to do if hourly cron is initialized.
+     *
+     * @param $event
+     * @return bool|void
+     */
     public static function onCron()
     {
         $calendarModels = CalendarExtensionCalendar::find()->all();
@@ -95,6 +93,5 @@ class Events extends Object
         }
         return true;
     }
-
 }
 

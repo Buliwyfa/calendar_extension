@@ -19,14 +19,7 @@ class Assets extends AssetBundle
     public $sourcePath = '@calendar_extension/resources';
 
     public $css = [
-//        'js/fullcalendar/fullcalendar.min.css',
-//        'css/calendar.css',
-        //'fullcalendar/fullcalendar.print.css', // print
     ];
     public $js = [
-//        'js/fullcalendar/lib/moment.min.js',
-//        'js/fullcalendar/fullcalendar.min.js',
-//        'js/fullcalendar/locale-all.js',
-//        'js/humhub.calendar.js'
     ];
 }

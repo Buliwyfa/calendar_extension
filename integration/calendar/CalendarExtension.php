@@ -8,14 +8,8 @@
 
 namespace humhub\modules\calendar_extension\integration\calendar;
 
-use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntryType;
 use Yii;
-use humhub\libs\Html;
 use yii\base\Object;
-use yii\helpers\Url;
-use DateTime;
-use DateInterval;
-use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntryQuery;
 
 /**
@@ -45,7 +39,7 @@ class CalendarExtension extends Object
             'title' => Yii::t('CalendarExtensionModule.base', 'Entry'),
             'color' => static::DEFAULT_COLOR,
             'icon' => 'fa-calendar-o',
-            'format' => 'Y-m-d',
+            'format' => 'Y-m-d H:i:s',
         ]);
     }
 

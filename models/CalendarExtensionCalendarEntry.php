@@ -6,22 +6,13 @@ use DateTimeZone;
 use humhub\libs\Html;
 use humhub\modules\search\interfaces\Searchable;
 use Yii;
-use yii\base\Exception;
 use DateTime;
 use humhub\libs\DbDateValidator;
-use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use yii\helpers\Url;
-
-
 use humhub\modules\calendar_extension\permissions\ManageEntry;
 use humhub\modules\calendar_extension\widgets\WallEntry;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\models\ContentTag;
-use humhub\widgets\Label;
 use humhub\modules\calendar_extension\CalendarUtils;
-use humhub\modules\calendar\interfaces\CalendarItem;
 
 /**
  * This is the model class for table "calendar_extension_calendar_entry".
@@ -113,29 +104,6 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
     {
         return $this->title;
     }
-
-    /**
-     * @inheritdoc
-     */
-//    public function getIcon()
-//    {
-//        return 'fa-calendar';
-//    }
-
-    /**
-     * @inheritdoc
-     */
-//    public function getLabels($result = [], $includeContentName = true)
-//    {
-//        $labels = [];
-//
-//        $type = $this->getType();
-//        if($type) {
-//            $labels[] = Label::asColor($type->color, $type->name)->sortOrder(310);
-//        }
-//
-//        return parent::getLabels($labels);
-//    }
 
     /**
      * @inheritdoc
@@ -242,16 +210,14 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
 //            $end->setTime('00','00', '00');
         }
 
-        $title = Html::encode($this->title);
-
         return [
 //            'id' => $this->id,
             'start' => $start,
             'end' => $end,
-            'title' => $this->getTitle(),
+            'title' => Html::encode($this->getTitle()),
             'editable' => false,
             'icon' => 'fa-calendar-o',
-            'allDay' => $this->all_day,
+            'allDay' => $this->isAllDay(),
             'viewUrl' => $this->content->container->createUrl('/calendar_extension/entry/view', ['id' => $this->id, 'cal' => '1']),
 //            'updateUrl' => $this->content->container->createUrl('/calendar_extension/entry/update-ajax', ['id' => $this->id]),
             'openUrl' => $this->content->container->createUrl('/calendar_extension/entry/view', ['id' => $this->id]),
@@ -265,49 +231,12 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
     }
 
     /**
-     * Get events duration in days
-     *
-     * @return int days
-     */
-//    public function getDurationDays()
-//    {
-//        return $this->formatter->getDurationDays();
-//    }
-
-    /**
-     * Checks if the event is currently running.
-     */
-//    public function isRunning()
-//    {
-//        return $this->formatter->isRunning();
-//    }
-
-    /**
-     * Checks the offset till the start date.
-     */
-//    public function getOffsetDays()
-//    {
-//        return $this->formatter->getOffsetDays();
-//    }
-
-    /**
      * @inheritdoc
      */
     public function getTimezone()
     {
         return $this->time_zone;
     }
-
-    /**
-     * @inheritdoc
-     */
-//    public function getTimezone()
-//    {
-//        if(!Yii::$app->user->isGuest) {
-//            Yii::$app->formatter->timeZone = Yii::$app->user->getIdentity()->time_zone;
-//        }
-//        return Yii::$app->formatter->timeZone;
-//    }
 
     public function getStartDateTime()
     {
@@ -335,51 +264,6 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
 
         return (boolean)$this->all_day;
     }
-
-    /**
-     * Returns all entries filtered by the given $includes and $filters within a given range.
-     * Note this function uses an open range which will include all events which start and/or end within the given search interval.
-     *
-     * @param DateTime $start
-     * @param DateTime $end
-     * @param array $includes
-     * @param array $filters
-     * @param int $limit
-     * @return CalendarExtensionCalendarEntry[]
-     * @throws Exception
-     * @see CalendarEntryQuery
-     */
-//    public static function getEntriesByRange(DateTime $start, DateTime $end, $includes = [], $filters = [], $limit = 50)
-//    {
-//        // Limit Range to one month
-//        $interval = $start->diff($end);
-//        if ($interval->days > 50) {
-//            throw new Exception('Range maximum exceeded!');
-//        }
-//
-//        return CalendarExtensionCalendarEntryQuery::find()
-//            ->from($start)->to($end)
-//            ->filter($filters)
-//            ->userRelated($includes)
-//            ->limit($limit)->all();
-//    }
-
-    /**
-     * Returns a list of upcoming events for the given $contentContainer.
-     *
-     * @param ContentContainerActiveRecord|null $contentContainer
-     * @param int $daysInFuture
-     * @param int $limit
-     * @return CalendarExtensionCalendarEntry[]
-     */
-//    public static function getUpcomingEntries(ContentContainerActiveRecord $contentContainer = null, $daysInFuture = 7, $limit = 5)
-//    {
-//        if ($contentContainer) {
-//            return CalendarExtensionCalendarEntryQuery::find()->container($contentContainer)->days($daysInFuture)->limit($limit)->all();
-//        } else {
-//            return CalendarExtensionCalendarEntryQuery::find()->userRelated()->days($daysInFuture)->limit($limit)->all();
-//        }
-//    }
 
 
     /**

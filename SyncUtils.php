@@ -2,11 +2,8 @@
 
 namespace humhub\modules\calendar_extension;
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\models\ContentContainer;
 use Yii;
 use humhub\modules\content\models\Content;
-use humhub\modules\calendar_extension\CalendarUtils;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendar;
 use ICal\ICal;
@@ -70,7 +67,7 @@ class SyncUtils
                     $exists = true;
                 } elseif ($dbModel->uid == $value->uid) {
                     // check if uid exists and enty has been updated in ical
-//                    $dbModel->updateByModel($value);
+                    $dbModel->updateByModel($value);
                     array_push($keepInDb, $dbModel);
                     $exists = true;
                 }

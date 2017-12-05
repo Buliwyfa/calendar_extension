@@ -2,7 +2,6 @@
 namespace humhub\modules\calendar_extension\models;
 
 use humhub\modules\calendar\interfaces\AbstractCalendarQuery;
-use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
 
 
 /**

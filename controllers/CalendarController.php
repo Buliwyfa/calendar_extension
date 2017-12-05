@@ -5,20 +5,16 @@ namespace humhub\modules\calendar_extension\controllers;
 
 use humhub\modules\calendar_extension\SyncUtils;
 use Yii;
-use yii\filters\VerbFilter;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
-use yii\data\ActiveDataProvider;
-use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\calendar_extension\CalendarUtils;
 use humhub\modules\space\models\Space;
+use humhub\modules\content\models\Content;
+use humhub\modules\calendar_extension\permissions\ManageCalendar;
+use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendar;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
 use ICal\ICal;
 
-use humhub\modules\calendar_extension\permissions\CreateCalendar;
-use humhub\modules\calendar_extension\permissions\ManageCalendar;
-use humhub\modules\content\models\Content;
 
 class CalendarController extends ContentContainerController
 {

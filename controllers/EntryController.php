@@ -2,19 +2,14 @@
 
 namespace humhub\modules\calendar_extension\controllers;
 
-use humhub\modules\calendar_extension\permissions\CreateEntry;
 use Yii;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
-use yii\data\ActiveDataProvider;
+use humhub\widgets\ModalClose;
 use humhub\modules\content\components\ContentContainerController;
-use yii\filters\VerbFilter;
+use humhub\modules\calendar_extension\permissions\ManageEntry;
 use humhub\modules\calendar_extension\models\CalendarExtensionCalendarEntry;
 
-
-use humhub\modules\calendar_extension\permissions\ManageEntry;
-use humhub\modules\stream\actions\Stream;
-use humhub\widgets\ModalClose;
 
 
 /**

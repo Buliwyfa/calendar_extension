@@ -2,12 +2,14 @@
 
 namespace humhub\modules\calendar_extension\models;
 
-use ICal\ICal;
+
 use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\calendar_extension\permissions\ManageCalendar;
-use humhub\modules\content\models\Content;
 use humhub\modules\search\interfaces\Searchable;
+use ICal\ICal;
+
+
 
 /**
  * This is the model class for table "calendar_extension_calendar".
