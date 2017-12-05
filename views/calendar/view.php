@@ -11,7 +11,7 @@ $this->title = $model->title;
 ?>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h1><?= Yii::t('CalendarExtensionModule.base', 'Calendar: {modelClass}', ['modelClass' => Html::encode($this->title),
+        <h1><?= Yii::t('CalendarExtensionModule.views_calendar', 'Calendar: {modelClass}', ['modelClass' => Html::encode($this->title),
             ]) ?></h1>
     </div>
     <div class="panel-body">
@@ -25,7 +25,7 @@ $this->title = $model->title;
                     'method' => 'post',
                 ],
             ]) ?>
-            <?= ModalButton::primary(Yii::t('CalendarExtensionModule.base', 'Sync Calendar'))->post('sync?id=' . $model->id)->sm()->icon('fa-refresh')->right();?>
+            <?= ModalButton::primary(Yii::t('CalendarExtensionModule.views_calendar', 'Sync Calendar'))->post('sync?id=' . $model->id)->sm()->icon('fa-refresh')->right();?>
         </div>
 
         </br>

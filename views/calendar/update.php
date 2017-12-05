@@ -4,8 +4,8 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model humhub\modules\space_news\models\SpaceNews */
-$this->title = Yii::t('SpaceNewsModule.base', 'Update {modelClass}: ', [
-        'modelClass' => Yii::t('SpaceNewsModule.base', 'Space News'),
+$this->title = Yii::t('CalendarExtensionModule.views_calendar', 'Update {modelClass}: ', [
+        'modelClass' => Yii::t('CalendarExtensionModule.views_calendar', 'Calendar'),
     ]) . $model->id;
 ?>
 <div class="panel panel-default">

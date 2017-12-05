@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model \humhub\modules\calendar_extension\models\ConfigForm */
 
-$this->title = Yii::t('CalendarExtensionModule.views_admin_index', 'Calendar Extension Configuration');
+$this->title = Yii::t('CalendarExtensionModule.views_admin', 'Calendar Extension Configuration');
 ?>
 
 <div class="panel panel-default">
@@ -34,7 +34,7 @@ $this->title = Yii::t('CalendarExtensionModule.views_admin_index', 'Calendar Ext
         </div>
 
         <div class="form-group">
-            <?= Html::submitButton(Yii::t('CalendarExtensionModule.views_admin_index', 'Save'), ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton(Yii::t('CalendarExtensionModule.views_admin', 'Save'), ['class' => 'btn btn-primary']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

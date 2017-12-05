@@ -27,7 +27,7 @@ $color = $calendarEntry->calendar->color ? $calendarEntry->calendar->color : $th
             </h5>
         </div>
         <?php if (!empty($calendarEntry->description) || !empty($calendarEntry->location) || !empty($calendarEntry->calendar->title) ) : ?>
-            <div <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarExtensionModule.views_entry_view', "Read full description...") ?>" style="overflow:hidden">
+            <div <?= ($collapse) ? 'data-ui-show-more' : '' ?> data-read-more-text="<?= Yii::t('CalendarExtensionModule.widgets', "Read full description...") ?>" style="overflow:hidden">
                 <?= MarkdownView::widget(['markdown' => $calendarEntry->description]); ?>
                 <?php if (!empty($calendarEntry->location)) : ?>
                     <i class="fa fa-map-marker colorDefault pull-left" style="font-size: 20px; margin-right: 8px"></i>

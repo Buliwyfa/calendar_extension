@@ -11,7 +11,7 @@ use humhub\widgets\ModalButton;
 /* @var $editUrl string */
 /* @var $contentContainer \humhub\modules\content\models\ContentContainer */
 
-$header = Yii::t('CalendarExtensionModule.base', 'Update {modelClass}: ', [
+$header = Yii::t('CalendarExtensionModule.views_entry', 'Update {modelClass}: ', [
         'modelClass' => Yii::t('CalendarExtensionModule.base', 'External Calendar Entry')
     ]) . $model->title;
 $model->calendar->color = empty($model->calendar->color) ? $this->theme->variable('info') : $model->calendar->color;

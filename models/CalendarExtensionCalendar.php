@@ -143,12 +143,15 @@ class CalendarExtensionCalendar extends ContentActiveRecord implements Searchabl
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('CalendarExtensionModule.base', 'ID'),
-            'title' => Yii::t('CalendarExtensionModule.base', 'Title'),
-            'url' => Yii::t('CalendarExtensionModule.base', 'Url'),
-            'public' => Yii::t('CalendarExtensionModule.base', 'Public'),
-            'time_zone' => Yii::t('CalendarExtensionModule.base', 'Timezone'),
-            'color' => Yii::t('CalendarExtensionModule.base', 'Color'),
+            'id' => Yii::t('CalendarExtensionModule.model_calendar', 'ID'),
+            'title' => Yii::t('CalendarExtensionModule.model_calendar', 'Title'),
+            'url' => Yii::t('CalendarExtensionModule.model_calendar', 'Url'),
+            'public' => Yii::t('CalendarExtensionModule.model_calendar', 'Public'),
+            'time_zone' => Yii::t('CalendarExtensionModule.model_calendar', 'Timezone'),
+            'color' => Yii::t('CalendarExtensionModule.model_calendar', 'Color'),
+            'version' => Yii::t('CalendarExtensionModule.model_calendar', 'iCal Version'),
+            'cal_name' => Yii::t('CalendarExtensionModule.model_calendar', 'Original Calendar Name'),
+            'cal_scale' => Yii::t('CalendarExtensionModule.model_calendar', 'Original Calendar Scale'),
         ];
     }
 

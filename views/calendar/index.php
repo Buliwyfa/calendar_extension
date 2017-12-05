@@ -7,7 +7,7 @@ use humhub\modules\user\models\User;
 /* @var $this yii\web\View */
 /* @var $models []\humhub\modules\calendar_extension\models\CalendarExtensionCalendar */
 
-$this->title = Yii::t('CalendarExtensionModule.base', 'External Calendars');
+$this->title = Yii::t('CalendarExtensionModule.views_calendar', 'External Calendars');
 ?>
 
 <div class="panel panel-default">
@@ -16,16 +16,16 @@ $this->title = Yii::t('CalendarExtensionModule.base', 'External Calendars');
     </div>
     <div class="panel-body">
         <div class="btn-group-sm">
-            <?= Html::a('<i class="fa fa-pencil-square-o edit"></i> ' . Yii::t('CalendarExtensionModule.base', 'Add Calendar'), $contentContainer->createUrl('/calendar_extension/calendar/create'), ['class' => 'btn-sm btn-success']) ?>
+            <?= Html::a('<i class="fa fa-pencil-square-o edit"></i> ' . Yii::t('CalendarExtensionModule.views_calendar', 'Add Calendar'), $contentContainer->createUrl('/calendar_extension/calendar/create'), ['class' => 'btn-sm btn-success']) ?>
         </div>
         <div>
             <table class="table table-responsive">
                 <thead>
                 <tr>
-                    <th scope="col"><?= Yii::t('CalendarExtensionModule.base', 'ID'); ?></th>
-                    <th scope="col"><?= Yii::t('CalendarExtensionModule.base', 'Title'); ?></th>
-                    <th scope="col"><?= Yii::t('CalendarExtensionModule.base', 'Public'); ?></th>
-                    <th scope="col"><?= Yii::t('CalendarExtensionModule.base', 'Actions'); ?></th>
+                    <th scope="col"><?= Yii::t('CalendarExtensionModule.model_calendar', 'ID'); ?></th>
+                    <th scope="col"><?= Yii::t('CalendarExtensionModule.model_calendar', 'Title'); ?></th>
+                    <th scope="col"><?= Yii::t('CalendarExtensionModule.model_calendar', 'Public'); ?></th>
+                    <th scope="col"><?= Yii::t('CalendarExtensionModule.views_calendar', 'Actions'); ?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,7 +33,7 @@ $this->title = Yii::t('CalendarExtensionModule.base', 'External Calendars');
                     <tr>
                         <td><?= $model->id ?></td>
                         <td><?= $model->title ?></td>
-                        <td><?= ($model->public) ? Yii::t('CalendarExtensionModule.base', 'Public') : Yii::t('CalendarExtensionModule.base', 'Private') ?></td>
+                        <td><?= ($model->public) ? Yii::t('CalendarExtensionModule.views_calendar', 'Public') : Yii::t('CalendarExtensionModule.views_calendar', 'Private') ?></td>
                         <td>
                             <?= Html::a('<i class="fa fa-eye view"></i> ' . Yii::t('CalendarExtensionModule.base', 'View'), $contentContainer->createUrl('/calendar_extension/calendar/view', ['id' => $model->id]), ['class' => 'btn-sm btn-info']) ?>
                             <?= Html::a('<i class="fa fa-pencil-square-o edit"></i> ' . Yii::t('CalendarExtensionModule.base', 'Update'), $contentContainer->createUrl('/calendar_extension/calendar/update', ['id' => $model->id]), ['class' => 'btn-sm btn-primary']) ?>

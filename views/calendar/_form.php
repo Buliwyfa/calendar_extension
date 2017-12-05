@@ -13,7 +13,7 @@ use humhub\widgets\ColorPickerField;
     <?php $form = ActiveForm::begin(); ?>
 
     <div id="event-color-field" class="form-group space-color-chooser-edit" style="margin-top: 5px;">
-        <?= $form->field($model, 'color')->widget(ColorPickerField::className(), ['container' => 'event-color-field'])->label(Yii::t('CalendarExtensionModule.base', 'Title and Color')); ?>
+        <?= $form->field($model, 'color')->widget(ColorPickerField::className(), ['container' => 'event-color-field'])->label(Yii::t('CalendarExtensionModule.views_calendar', 'Title and Color')); ?>
 
         <?= $form->field($model, 'title', ['template' => '
                                     {label}
@@ -24,7 +24,7 @@ use humhub\widgets\ColorPickerField;
                                         {input}
                                     </div>
                                     {error}{hint}'
-        ])->textInput(['placeholder' => Yii::t('CalendarExtensionModule.base', 'Title'), 'maxlength' => true])->label(false) ?>
+        ])->textInput(['placeholder' => Yii::t('CalendarExtensionModule.model_calendar', 'Title'), 'maxlength' => true])->label(false) ?>
 
     </div>
 

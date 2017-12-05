@@ -176,17 +176,17 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('CalendarExtensionModule.base', 'ID'),
-            'uid' => Yii::t('CalendarExtensionModule.base', 'UID'),
-            'calendar_id' => Yii::t('CalendarExtensionModule.base', 'Calendar'),
-            'title' => Yii::t('CalendarExtensionModule.base', 'Title'),
-            'description' => Yii::t('CalendarExtensionModule.base', 'Description'),
-            'location' => Yii::t('CalendarExtensionModule.base', 'Location'),
-            'last_modified' => Yii::t('CalendarExtensionModule.base', 'Last Modified'),
-            'dtstamp' => Yii::t('CalendarExtensionModule.base', 'DT Stamp'),
-            'start_datetime' => Yii::t('CalendarExtensionModule.base', 'Start Datetime'),
-            'end_datetime' => Yii::t('CalendarExtensionModule.base', 'End Datetime'),
-            'all_day' => Yii::t('CalendarExtensionModule.base', 'All Day'),
+            'id' => Yii::t('CalendarExtensionModule.model_calendar_entry', 'ID'),
+            'uid' => Yii::t('CalendarExtensionModule.model_calendar_entry', 'UID'),
+            'calendar_id' => Yii::t('CalendarExtensionModule.model_calendar_entry', 'Calendar'),
+            'title' => Yii::t('CalendarExtensionModule.model_calendar_entry', 'Title'),
+            'description' => Yii::t('CalendarExtensionModule.model_calendar_entry', 'Description'),
+            'location' => Yii::t('CalendarExtensionModule.model_calendar_entry', 'Location'),
+            'last_modified' => Yii::t('CalendarExtensionModule.model_calendar_entry', 'Last Modified'),
+            'dtstamp' => Yii::t('CalendarExtensionModule.model_calendar_entry', 'DT Stamp'),
+            'start_datetime' => Yii::t('CalendarExtensionModule.model_calendar_entry', 'Start Datetime'),
+            'end_datetime' => Yii::t('CalendarExtensionModule.model_calendar_entry', 'End Datetime'),
+            'all_day' => Yii::t('CalendarExtensionModule.model_calendar_entry', 'All Day'),
         ];
     }
 
@@ -213,7 +213,6 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
 
         if ($this->all_day == 1 && $end->format('H:i:s') == '00:00:00') {
 //            $date->setTime('23','59','59');
-//            $date->modify("+1 day");
             $end->modify('-1 second');
         }
         $this->end_datetime = $end->format('Y-m-d H:i:s');
@@ -230,30 +229,6 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
         return parent::beforeDelete();
     }
 
-
-    /**
-     * Returns the related CalendarEntryType relation if given.
-     *
-     * @return CalendarEntryType
-     */
-//    public function getType()
-//    {
-//        return CalendarEntryType::findByContent($this->content)->one();
-//    }
-
-    /**
-     * Sets the clanedarentry type.
-     * @param $type
-     */
-//    public function setType($type)
-//    {
-//        $type = ($type instanceof ContentTag) ? $type : ContentTag::findOne($type);
-//        if($type->is(CalendarEntryType::class)) {
-//            CalendarEntryType::deleteContentRelations($this->content);
-//            $this->content->addTag($type);
-//        }
-//    }
-
     /**
      * @inheritdoc
      */
@@ -264,20 +239,11 @@ class CalendarExtensionCalendarEntry extends ContentActiveRecord implements Sear
 
         if ($this->all_day) {
             $end = $end->modify('+1 second');
-//                $diff = $start->diff($end);
-//                if ($diff->days > 1)
-//                {
-//                    $this->all_day=0;
-//                    $end->setTime('00','00', '00');
-//                }
-//                $end->setTime('00','00');
-//                $end->format('Y-m-d');
+//            $end->setTime('00','00', '00');
         }
 
         $title = Html::encode($this->title);
 
-
-        // TODO: change url to URL::to() --> if no pretty URL is activated
         return [
 //            'id' => $this->id,
             'start' => $start,
