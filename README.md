@@ -15,7 +15,7 @@ If you want to add external calendars, go to a specific space (or your own profi
 
 The extension module uses the hourly cron event to check for changes. But you can also manually sync the calendar by going to:
 
-> space/profile -> modules -> external calendar -> configurate -> choose your calendar (show) -> click on sync-button the the top right.
+> space/profile -> modules -> external calendar -> configurate -> choose your calendar (show) -> click on sync-button
 
 
 **If there is an error, something went wrong with your sync.**
