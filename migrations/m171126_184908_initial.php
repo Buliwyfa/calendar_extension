@@ -17,6 +17,7 @@ class m171126_184908_initial extends Migration
             'version' => 'varchar(10)',
             'cal_name' => 'varchar(255)',
             'cal_scale' => 'varchar(60)',
+            'autosync' => 'tinyint(1) NOT NULL DEFAULT 0',
         ), '');
 
         $this->createTable('calendar_extension_calendar_entry', array(

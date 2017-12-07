@@ -37,6 +37,7 @@ $this->title = $model->title;
                     'title',
                     'url:ntext',
                     'public:boolean',
+                    'autosync:boolean',
                     'time_zone',
 //                    'color',
                     'version',

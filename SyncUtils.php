@@ -33,7 +33,6 @@ class SyncUtils
                 'skipRecurrence' => false, // Default value
                 'useTimeZoneWithRRules' => false, // Default value
             ));
-
             return $ical;
         } catch (\Exception $e) {
             return false;
@@ -110,6 +109,7 @@ class SyncUtils
         {
             return $models;
         }
+
         foreach ($events as $event)
         {
             $model = new CalendarExtensionCalendarEntry();
@@ -118,7 +118,14 @@ class SyncUtils
             $model->title = $event->summary;
             $model->description = $event->description;
             $model->location = $event->location;
-            $model->last_modified = CalendarUtils::formatDateTimeToString($event->last_modified);
+            if (isset($event->last_modified))
+            {
+                $model->last_modified = CalendarUtils::formatDateTimeToString($event->last_modified);
+            }
+            else
+            {
+                $model->last_modified = CalendarUtils::formatDateTimeToString($event->lastmodified);
+            }
             $model->dtstamp = CalendarUtils::formatDateTimeToString($event->dtstamp);
             $model->start_datetime = CalendarUtils::formatDateTimeToString($event->dtstart);
             $model->end_datetime = CalendarUtils::formatDateTimeToString($event->dtend);

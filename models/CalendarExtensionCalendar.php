@@ -26,6 +26,7 @@ use ICal\ICal;
  * @property string $version    The ical-version, the calendar is stored
  * @property string $cal_name    The original calendar-name
  * @property string $cal_scale    The original calendar scale format, e.g. Gregorian
+ * @property integer $autosync    Set if the Content should be autosynced
  *
  * property CalendarExtensionEvent[] $calendarExtensionEvents
  * @property CalendarExtensionCalendarEntry[] $CalendarExtensionCalendarEntries
@@ -113,7 +114,7 @@ class CalendarExtensionCalendar extends ContentActiveRecord implements Searchabl
             [['color'], 'string', 'max' => 7],
             [['url'],'url','defaultScheme' => 'http', 'message' => Yii::t('CalendarExtensionModule.sync_result', "No valid ical url! Try an url with http / https.")],
             [['url'], 'validateURL'],
-            [['public'], 'integer'],
+            [['public', 'autosync'], 'integer'],
         ];
     }
 
@@ -137,8 +138,8 @@ class CalendarExtensionCalendar extends ContentActiveRecord implements Searchabl
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['create'] = ['title', 'url', 'public'];
-        $scenarios['admin'] = ['title', 'url', 'public'];
+        $scenarios['create'] = ['title', 'url', 'public', 'autosync'];
+        $scenarios['admin'] = ['title', 'url', 'public', 'autosync'];
         return $scenarios;
     }
 
@@ -157,6 +158,7 @@ class CalendarExtensionCalendar extends ContentActiveRecord implements Searchabl
             'version' => Yii::t('CalendarExtensionModule.model_calendar', 'iCal Version'),
             'cal_name' => Yii::t('CalendarExtensionModule.model_calendar', 'Original Calendar Name'),
             'cal_scale' => Yii::t('CalendarExtensionModule.model_calendar', 'Original Calendar Scale'),
+            'autosync' => Yii::t('CalendarExtensionModule.model_calendar', 'Auto Sync hourly'),
         ];
     }
 

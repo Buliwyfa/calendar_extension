@@ -64,11 +64,18 @@ class Events extends Object
     public static function onCron()
     {
         $calendarModels = CalendarExtensionCalendar::find()->all();
-        foreach ($calendarModels as $calendarModel) {
+
+        foreach ($calendarModels as $calendarModel)
+        {
             if ($calendarModel) {
+                if (!$calendarModel->autosync)
+                {
+                    continue;
+                }
                 $ical = SyncUtils::createICal($calendarModel->url);
-                if (!$ical) {
-                    return;
+                if (!$ical)
+                {
+                    continue;
                 }
 
                 // add info to CalendarModel
@@ -76,22 +83,27 @@ class Events extends Object
                 $calendarModel->save();
 
                 // check events
-                if ($ical->hasEvents()) {
+                if ($ical->hasEvents())
+                {
                     // get formatted array
                     $events = $ical->events();
 
                     // create Entry-models without safe
                     $models = SyncUtils::getModels($events, $calendarModel);
                     $result = SyncUtils::checkAndSubmitModels($models, $calendarModel->id);
-                    if (!$result) {
-                        return;
+                    if (!$result)
+                    {
+                        continue;
                     }
                 }
-            } else {
-                return;
+            }
+            else
+            {
+                continue;
             }
         }
-        return true;
+
+        return;
     }
 }
 

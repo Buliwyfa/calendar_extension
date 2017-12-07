@@ -15,4 +15,5 @@ return array(
     'iCal Version' => 'iCal Version',
     'Original Calendar Name' => 'Originaler Kalendername',
     'Original Calendar Scale' => 'Originale Kalenderskala',
+    'Auto Sync hourly' => 'Automatisch stündlich aktualisieren',
 );
