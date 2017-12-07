@@ -24,11 +24,7 @@ The extension module uses the hourly cron event to check for changes. But you ca
 *Hints*:
 - Events will only be changed, if the last_modified field or the uid field of the external calendar changes.
 - When you try to add an external calendar, the module first checks whether the URL you added is correct and can be converted to an iCal file.
-**Some iCal-Url's start with a** `webcal://`
-
-All you have to do is to **change this to**
-`http://` or `https://`
-
+**Some iCal-Url's start with a** `webcal://`. All you have to do is to **change this to** `http://` or `https://`
 For example:
 ```
 Original: webcal: //calendar. google. com/calendar/ical/....
