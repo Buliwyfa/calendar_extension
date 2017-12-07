@@ -35,16 +35,16 @@ This is the first module I've written and I hope it works for you. I have orient
 I also hope that I can find a solution for the ["upcoming-events"-issue](https://github.com/staxDB/calendar_extenstion/issues/1), but I haven't found a solution yet. Maybe one of you can do that.
 
 
-__Module website:__ <https://github.com/staxDB/calendar_extenstion.git>    
+__Module website:__ <https://github.com/staxDB/calendar_extension.git>    
 __Author:__ David Born    
 
 ## Changelog
 
-<https://github.com/staxDB/calendar_extenstion/commits/master>
+<https://github.com/staxDB/calendar_extension/commits/master>
 
 ## Bugtracker
 
-<https://github.com/staxDB/calendar_extenstion/issues>
+<https://github.com/staxDB/calendar_extension/issues>
 
 ## ToDos
 - fix bug with calendar-widget "upcoming events"
