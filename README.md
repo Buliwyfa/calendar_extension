@@ -25,11 +25,11 @@ Events will only be changed, if the last_modified field or the uid field of the 
 
 *Hint*:
 When you try to add an external calendar, the module first checks whether the URL you added is correct and can be converted to an iCal file.
-**Some iCal-Url's start with a
+**Some iCal-Url's start with a**
 ```
 "WEBCAL: //"
 ```
-.**
+
 All you have to do is **change this to**
 ```
 http:// 
