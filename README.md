@@ -1,7 +1,7 @@
 ## Description
 Calendar extension for integration of external calendars with [iCalendar-format](https://en.wikipedia.org/wiki/ICalendar).
 
-This module has only been tested in Humhub version 1.2.3 with the calendar module version 0.6.3!
+This module has **only been tested** in **Humhub version 1.2.3** with the **calendar module version 0.6.3**!
 
 ## Installation
 First you have to activate the original calendar module for humhub.
