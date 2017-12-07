@@ -32,7 +32,7 @@ Change to: https://calendar.google.com/calendar/ical/...
 ```
 ## Informations
 This is the first module I've written and I hope it works for you. I have oriented myself on the original calendar module code.
-I also hope that I can find a solution for the ["upcoming-events"-issue](https://github.com/staxDB/calendar_extenstion/issues/1), but I haven't found a solution yet. Maybe one of you can do that.
+I also hope that I can find a solution for the ["upcoming-events"-issue](https://github.com/staxDB/calendar_extenstion/issues/1), but I haven't found it yet. Maybe one of you can do that.
 
 
 __Module website:__ <https://github.com/staxDB/calendar_extension.git>    
