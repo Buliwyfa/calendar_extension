@@ -30,6 +30,7 @@ For example:
 Original: webcal://calendar.google.com/calendar/ical/....
 Change to: https://calendar.google.com/calendar/ical/...
 ```
+## Informations
 
 __Module website:__ <https://github.com/staxDB/calendar_extenstion.git>    
 __Author:__ David Born    
