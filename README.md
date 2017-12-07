@@ -3,6 +3,9 @@ Calendar extension for integration of external calendars with [iCalendar-format]
 
 This module has **only been tested** in **Humhub version 1.2.3** with the **calendar module version 0.6.3**!
 
+**Be careful!**
+some calendars are not intended for permanent synchronization. These do not send a "last_modified" timestamp. Please do not select the option `auto sync hourly` for these. It could slow down your system..
+
 ## Installation
 First you have to activate the original calendar module for humhub.
 The calendar_extension module only works if it is activated!
@@ -48,6 +51,8 @@ __Author:__ David Born
 
 ## ToDos
 - fix bug with calendar-widget "upcoming events"
+- test other calendars than google (only private link tested)
+- better performance for auto sync needed
 
 
 This Module uses the Calendar UI Interface in v0.6 - [see dokumentation](https://github.com/humhub/humhub-modules-calendar/blob/master/docs/interface.md)
