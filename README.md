@@ -8,16 +8,15 @@ First you have to activate the original calendar module for humhub.
 The calendar_extension module only works if it is activated!
 
 By default, this module prevents the calendar events from being posted to the stream. You can change this by editing the settings in the admin area:
-```
-administration->module->calendar extension->configuration
-```
+> administration->module->calendar extension->configuration
+
 
 If you want to add external calendars, go to a specific space (or your own profile), activate the calendar_extension module in the space settings (or profile settings) and start the configuration of the module here.
 
 The extension module uses the hourly cron event to check for changes. But you can also manually sync the calendar by going to:
-```
-space/profile -> modules -> external calendar -> configurate -> choose your calendar (show) -> click on sync-button the the top right.
-```
+
+> space/profile -> modules -> external calendar -> configurate -> choose your calendar (show) -> click on sync-button the the top right.
+
 
 **If there is an error, something went wrong with your sync.**
 
@@ -25,19 +24,12 @@ Events will only be changed, if the last_modified field or the uid field of the 
 
 *Hint*:
 When you try to add an external calendar, the module first checks whether the URL you added is correct and can be converted to an iCal file.
-**Some iCal-Url's start with a**
-```
-"WEBCAL: //"
-```
+**Some iCal-Url's start with a** `webcal://`
 
-All you have to do is **change this to**
-```
-http:// 
-or 
-https:// 
-```
-protocol. For example:
+All you have to do is to **change this to**
+`http://` or `https://`
 
+For example:
 ```
 Original: webcal: //calendar. google. com/calendar/ical/....
 Change to: https://calendar.google.com/calendar/ical/...
